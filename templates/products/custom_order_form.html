@@ -1,0 +1,546 @@
+{% extends 'base.html' %}
+
+{% block title %}Custom Order - MZBELL'S BAKERY{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                screens: {
+                    'xs': '475px',
+                },
+                animation: {
+                    'bounce-slow': 'bounce 3s infinite',
+                    'fade-in-up': 'fadeInUp 0.6s ease forwards',
+                },
+                keyframes: {
+                    fadeInUp: {
+                        '0%': {
+                            opacity: '0',
+                            transform: 'translateY(30px)'
+                        },
+                        '100%': {
+                            opacity: '1',
+                            transform: 'translateY(0)'
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .form-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    
+    .input-field {
+        transition: all 0.3s ease;
+        border: 2px solid #e5e7eb;
+    }
+    
+    .input-field:focus {
+        border-color: #ec4899;
+        box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.1);
+        transform: translateY(-1px);
+    }
+    
+    .checkbox-custom {
+        position: relative;
+    }
+    
+    .checkbox-custom input[type="checkbox"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d1d5db;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+    
+    .checkbox-custom input[type="checkbox"]:checked {
+        background: #ec4899;
+        border-color: #ec4899;
+    }
+    
+    .checkbox-custom input[type="checkbox"]:checked::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .radio-custom {
+        position: relative;
+    }
+    
+    .radio-custom input[type="radio"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d1d5db;
+        border-radius: 50%;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+    
+    .radio-custom input[type="radio"]:checked {
+        border-color: #ec4899;
+        background: #ec4899;
+    }
+    
+    .radio-custom input[type="radio"]:checked::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+        transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+    }
+    
+    .section-divider {
+        background: linear-gradient(90deg, transparent, #ec4899, transparent);
+        height: 2px;
+        margin: 2rem 0;
+    }
+    
+    .floating-label {
+        position: relative;
+    }
+    
+    .cake-icon {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    /* Mobile-specific improvements */
+    @media (max-width: 768px) {
+        .input-field {
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
+        
+        .form-section {
+            margin: 0 10px;
+        }
+        
+        .checkbox-custom, .radio-custom {
+            min-height: 44px; /* Better touch targets */
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+        }
+    }
+    
+    /* Tablet responsive adjustments */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .container {
+            padding: 0 20px;
+        }
+    }
+    
+    /* Animation classes */
+    .fade-in-up {
+        animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-4 sm:py-8 px-2 sm:px-4" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+    <!-- Decorative Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 bg-pink-300 rounded-full opacity-20 animate-bounce-slow"></div>
+        <div class="absolute top-1/3 -left-10 w-24 h-24 sm:w-32 sm:h-32 bg-yellow-300 rounded-full opacity-20 animate-bounce-slow" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-10 right-1/4 w-20 h-20 sm:w-24 sm:h-24 bg-purple-300 rounded-full opacity-20 animate-bounce-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <!-- Header Section -->
+        <div class="text-center mb-8 sm:mb-12 fade-in-up px-4">
+            <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full shadow-lg mb-4 sm:mb-6">
+                <span class="text-3xl sm:text-4xl cake-icon">🧁</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-3 sm:mb-4 leading-tight">
+                Custom Order Form
+            </h1>
+            <div class="w-16 sm:w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto mb-3 sm:mb-4 rounded-full"></div>
+            <p class="text-gray-700 text-base sm:text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed px-2">
+                ✨ Create your dream cake or dessert! Fill out the form below and we'll bring your sweetest vision to life ✨
+            </p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-8 lg:p-12 fade-in-up mx-2 sm:mx-0">
+            <form method="post" class="space-y-6 sm:space-y-8">
+                {% csrf_token %}
+                
+                <!-- Customer Information Section -->
+                <div class="space-y-4 sm:space-y-6">
+                    <div class="flex items-center space-x-3 mb-4 sm:mb-6">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs sm:text-sm">1</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800">Personal Information</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        <div class="floating-label">
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">👤</span> Full Name *
+                            </label>
+                            <input type="text" name="full_name" required 
+                                   class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base">
+                        </div>
+                        <div class="floating-label">
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">📞</span> Phone Number *
+                            </label>
+                            <input type="tel" name="phone" required 
+                                   class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        <div class="floating-label">
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">📧</span> Email Address *
+                            </label>
+                            <input type="email" name="email" required 
+                                   class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base">
+                        </div>
+                        <div class="floating-label">
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">📅</span> Event Date *
+                            </label>
+                            <input type="date" name="event_date" required 
+                                   class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Divider -->
+                <div class="section-divider"></div>
+
+                <!-- Order Details Section -->
+                <div class="space-y-4 sm:space-y-6">
+                    <div class="flex items-center space-x-3 mb-4 sm:mb-6">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs sm:text-sm">2</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800">Order Details</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">🎂</span> Product Type *
+                            </label>
+                            <select name="product_type" required 
+                                    class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base">
+                                <option value="">Choose your sweet creation</option>
+                                <option value="wedding_cake">💒 Wedding Cake</option>
+                                <option value="birthday_cake">🎉 Birthday Cake</option>
+                                <option value="celebration_cake">🎊 Celebration Cake</option>
+                                <option value="cupcakes">🧁 Cupcakes</option>
+                                <option value="cookies">🍪 Cookies</option>
+                                <option value="pastries">🥐 Pastries</option>
+                                <option value="other">✨ Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">👥</span> Number of Servings *
+                            </label>
+                            <input type="number" name="servings" min="1" required 
+                                   class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base"
+                                   placeholder="How many people to serve?">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">🍰</span> Flavor Preference
+                            </label>
+                            <select name="flavor" 
+                                    class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base">
+                                <option value="">Select your favorite flavor</option>
+                                <option value="vanilla">🤍 Vanilla</option>
+                                <option value="chocolate">🤎 Chocolate</option>
+                                <option value="strawberry">🍓 Strawberry</option>
+                                <option value="red_velvet">❤️ Red Velvet</option>
+                                <option value="lemon">🍋 Lemon</option>
+                                <option value="carrot">🥕 Carrot</option>
+                                <option value="custom">🌟 Custom Flavor</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                                <span class="mr-2">💰</span> Budget Range
+                            </label>
+                            <select name="budget" 
+                                    class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white text-sm sm:text-base">
+                                <option value="">What's your budget?</option>
+                                <option value="under_50">💵 Under $50</option>
+                                <option value="50_100">💵 $50 - $100</option>
+                                <option value="100_200">💰 $100 - $200</option>
+                                <option value="200_500">💰 $200 - $500</option>
+                                <option value="over_500">💎 Over $500</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Divider -->
+                <div class="section-divider"></div>
+
+                <!-- Special Requirements Section -->
+                <div class="space-y-4 sm:space-y-6">
+                    <div class="flex items-center space-x-3 mb-4 sm:mb-6">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs sm:text-sm">3</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800">Special Requirements</h3>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-3 sm:mb-4 flex items-center text-sm sm:text-base">
+                            <span class="mr-2">⚠️</span> Dietary Requirements & Allergies
+                        </label>
+                        <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <label class="checkbox-custom flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer min-h-[44px]">
+                                <input type="checkbox" name="requirements" value="gluten_free" class="mr-3">
+                                <span class="text-gray-700 text-sm sm:text-base">🌾 Gluten-Free</span>
+                            </label>
+                            <label class="checkbox-custom flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer min-h-[44px]">
+                                <input type="checkbox" name="requirements" value="dairy_free" class="mr-3">
+                                <span class="text-gray-700 text-sm sm:text-base">🥛 Dairy-Free</span>
+                            </label>
+                            <label class="checkbox-custom flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer min-h-[44px]">
+                                <input type="checkbox" name="requirements" value="sugar_free" class="mr-3">
+                                <span class="text-gray-700 text-sm sm:text-base">🍯 Sugar-Free</span>
+                            </label>
+                            <label class="checkbox-custom flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer min-h-[44px]">
+                                <input type="checkbox" name="requirements" value="nut_free" class="mr-3">
+                                <span class="text-gray-700 text-sm sm:text-base">🥜 Nut-Free</span>
+                            </label>
+                            <label class="checkbox-custom flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer min-h-[44px]">
+                                <input type="checkbox" name="requirements" value="vegan" class="mr-3">
+                                <span class="text-gray-700 text-sm sm:text-base">🌱 Vegan</span>
+                            </label>
+                            <label class="checkbox-custom flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer min-h-[44px]">
+                                <input type="checkbox" name="requirements" value="kosher" class="mr-3">
+                                <span class="text-gray-700 text-sm sm:text-base">✡️ Kosher</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Divider -->
+                <div class="section-divider"></div>
+
+                <!-- Design Section -->
+                <div class="space-y-4 sm:space-y-6">
+                    <div class="flex items-center space-x-3 mb-4 sm:mb-6">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs sm:text-sm">4</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800">Design & Details</h3>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                            <span class="mr-2">🎨</span> Design Description
+                        </label>
+                        <textarea name="design_description" rows="4" 
+                                  placeholder="✨ Describe your dream design! Tell us about colors, themes, decorations, style preferences, or any specific details that will make your creation perfect..."
+                                  class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white resize-vertical text-sm sm:text-base"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                            <span class="mr-2">📝</span> Additional Notes
+                        </label>
+                        <textarea name="additional_notes" rows="3" 
+                                  placeholder="💭 Any other special requests, inspiration photos you'd like to share, or important information we should know..."
+                                  class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white resize-vertical text-sm sm:text-base"></textarea>
+                    </div>
+                </div>
+
+                <!-- Section Divider -->
+                <div class="section-divider"></div>
+
+                <!-- Delivery Section -->
+                <div class="space-y-4 sm:space-y-6">
+                    <div class="flex items-center space-x-3 mb-4 sm:mb-6">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs sm:text-sm">5</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800">Delivery Options</h3>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-3 sm:mb-4 flex items-center text-sm sm:text-base">
+                            <span class="mr-2">🚚</span> How would you like to receive your order? *
+                        </label>
+                        <div class="space-y-3">
+                            <label class="radio-custom flex items-start p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg hover:from-green-100 hover:to-emerald-100 transition-colors cursor-pointer border-2 border-transparent hover:border-green-200 min-h-[44px]">
+                                <input type="radio" name="delivery_option" value="pickup" required class="mt-1 mr-3 sm:mr-4">
+                                <div class="flex-1">
+                                    <span class="text-gray-800 font-medium text-sm sm:text-base">🏪 Store Pickup</span>
+                                    <p class="text-xs sm:text-sm text-gray-600 mt-1">Free pickup from our bakery - we'll have your order ready!</p>
+                                </div>
+                            </label>
+                            <label class="radio-custom flex items-start p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-colors cursor-pointer border-2 border-transparent hover:border-blue-200 min-h-[44px]">
+                                <input type="radio" name="delivery_option" value="delivery" required class="mt-1 mr-3 sm:mr-4">
+                                <div class="flex-1">
+                                    <span class="text-gray-800 font-medium text-sm sm:text-base">🚚 Local Delivery</span>
+                                    <p class="text-xs sm:text-sm text-gray-600 mt-1">Convenient delivery to your location (additional charges may apply)</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Address (conditionally shown) -->
+                    <div id="delivery_address" class="hidden space-y-3">
+                        <label class="block text-gray-700 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                            <span class="mr-2">📍</span> Delivery Address
+                        </label>
+                        <textarea name="delivery_address" rows="3" 
+                                  placeholder="🏠 Please provide the complete delivery address including street, city, and any special delivery instructions..."
+                                  class="input-field w-full px-4 sm:px-5 py-3 sm:py-4 border rounded-lg sm:rounded-xl focus:outline-none text-gray-700 bg-white resize-vertical text-sm sm:text-base"></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Section -->
+                <div class="pt-6 sm:pt-8">
+                    <div class="text-center">
+                        <button type="submit" 
+                                class="submit-btn text-white font-bold py-4 sm:py-5 px-8 sm:px-12 rounded-xl sm:rounded-2xl transition duration-300 w-full sm:w-auto text-sm sm:text-base">
+                            <span class="flex items-center justify-center">
+                                <span class="mr-2">🎉</span>
+                                <span class="hidden xs:inline">Submit My Custom Order Request</span>
+                                <span class="xs:hidden">Submit Order Request</span>
+                                <span class="ml-2">✨</span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-4 sm:mt-6 p-3 sm:p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg sm:rounded-xl">
+                        <p class="text-gray-700 font-medium text-sm sm:text-base">📞 We'll contact you within 24 hours to discuss your order and provide a personalized quote!</p>
+                        <p class="text-xs sm:text-sm text-gray-600 mt-2">Questions? Call us at <span class="font-semibold text-pink-600">(555) 123-CAKE</span></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Show/hide delivery address based on delivery option selection
+    document.addEventListener('DOMContentLoaded', function() {
+        const deliveryOptions = document.querySelectorAll('input[name="delivery_option"]');
+        const deliveryAddress = document.getElementById('delivery_address');
+        
+        deliveryOptions.forEach(option => {
+            option.addEventListener('change', function() {
+                if (this.value === 'delivery') {
+                    deliveryAddress.classList.remove('hidden');
+                    deliveryAddress.querySelector('textarea').required = true;
+                    // Add smooth animation
+                    deliveryAddress.style.opacity = '0';
+                    deliveryAddress.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        deliveryAddress.style.transition = 'all 0.3s ease';
+                        deliveryAddress.style.opacity = '1';
+                        deliveryAddress.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    deliveryAddress.classList.add('hidden');
+                    deliveryAddress.querySelector('textarea').required = false;
+                }
+            });
+        });
+
+        // Add smooth scroll to form sections
+        const sections = document.querySelectorAll('.fade-in-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${entry.target.dataset.delay || 0}ms`;
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Enhanced form validation feedback
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.required && !this.value) {
+                    this.style.borderColor = '#ef4444';
+                    this.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.1)';
+                } else if (this.value) {
+                    this.style.borderColor = '#10b981';
+                    this.style.boxShadow = '0 0 0 4px rgba(16, 185, 129, 0.1)';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+{% block extra_meta %}
+{% load static %}
+<meta name="description" content="Custom Order Form - MZBELL'S BAKERY">
+<meta name="keywords" content="custom cake order, personalized cakes, MZBELL'S BAKERY">
+<meta property="og:title" content="Custom Order Form - MZBELL'S BAKERY">
+<meta property="og:description" content="Order your custom cake today!">
+<meta property="og:image" content="{% static 'images/og-image.jpg' %}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% endblock %}

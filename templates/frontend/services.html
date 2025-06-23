@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Our Services - MZBELL'S BAKERY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+        <h1 class="text-5xl font-bold text-pink-600 mb-6">Our Services</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            From custom cakes to full-service catering, we offer comprehensive bakery services 
+            to make your special moments sweeter and more memorable.
+        </p>
+    </div>
+
+    <!-- Main Services Grid -->
+    <div class="grid lg:grid-cols-2 gap-12 mb-16">
+        <!-- Custom Cakes -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-64 bg-gradient-to-br from-pink-200 to-pink-400 flex items-center justify-center">
+                <div class="text-center text-white">
+                    <div class="text-6xl mb-4">🎂</div>
+                    <h2 class="text-3xl font-bold">Custom Cakes</h2>
+                </div>
+            </div>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Personalized Cake Design</h3>
+                <p class="text-gray-600 mb-6">
+                    Transform your vision into reality with our custom cake services. From wedding cakes to birthday celebrations, 
+                    we create unique designs that reflect your style and taste preferences.
+                </p>
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Wedding Cakes
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Birthday Cakes
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Anniversary Cakes
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Corporate Cakes
+                        </li>
+                    </ul>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Multi-tier Designs
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Custom Flavors
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Fondant Work
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-pink-600 rounded-full mr-3"></span>
+                            Sugar Flowers
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-2xl font-bold text-pink-600">Starting at $75</span>
+                    <a href="{% url 'frontend:custom_order' %}" 
+                       class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                        Order Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Catering Services -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-64 bg-gradient-to-br from-purple-200 to-purple-400 flex items-center justify-center">
+                <div class="text-center text-white">
+                    <div class="text-6xl mb-4">🍽️</div>
+                    <h2 class="text-3xl font-bold">Catering Services</h2>
+                </div>
+            </div>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Full-Service Event Catering</h3>
+                <p class="text-gray-600 mb-6">
+                    Elevate your events with our professional catering services. We provide fresh, delicious baked goods 
+                    and desserts with complete setup and service for gatherings of all sizes.
+                </p>
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Corporate Events
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Wedding Receptions
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Private Parties
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Office Functions
+                        </li>
+                    </ul>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Setup & Breakdown
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Delivery Service
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Custom Packages
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
+                            Professional Display
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-2xl font-bold text-purple-600">Starting at $150</span>
+                    <a href="{% url 'frontend:catering' %}" 
+                       class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Services -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Additional Services</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Delivery Service -->
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white text-2xl">🚚</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Delivery Service</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Convenient delivery service within 25 miles of our bakery. Safe transport ensures your order arrives perfect.
+                </p>
+                <div class="text-blue-600 font-bold">$15-35</div>
+            </div>
+
+            <!-- Consultation -->
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white text-2xl">💭</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Design Consultation</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    One-on-one design consultation to plan your perfect cake or dessert display for special events.
+                </p>
+                <div class="text-green-600 font-bold">Free with Order</div>
+            </div>
+
+            <!-- Tasting -->
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white text-2xl">👅</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Cake Tasting</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Sample our flavors and fillings before placing your order. Perfect for wedding and large event planning.
+                </p>
+                <div class="text-yellow-600 font-bold">$25 per session</div>
+            </div>
+
+            <!-- Setup Service -->
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white text-2xl">🏗️</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Event Setup</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Professional setup and styling of your dessert displays at your event venue by our experienced team.
+                </p>
+                <div class="text-red-600 font-bold">$50-100</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specialty Options -->
+    <div class="bg-gray-50 rounded-lg p-8 mb-16">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Specialty Options</h2>
+        <p class="text-center text-gray-600 mb-8">
+            We offer a range of specialty options to cater to dietary needs and preferences. 
+            Let us know how we can make your order perfect for you!
+        </p>
+        {% endblock %}

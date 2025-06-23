@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-xl mx-auto p-6 bg-white rounded shadow">
+  <h2 class="text-xl font-bold text-pink-600 mb-4">Rate Your Delivery</h2>
+
+  <p class="mb-4">Delivered to: <strong>{{ delivery.order.delivery_address }}</strong><br>
+  Completed at: {{ delivery.completed_at|date:"F j, Y - H:i A" }}</p>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="bg-pink-600 text-white py-2 px-4 rounded hover:bg-pink-700">Submit Rating</button>
+  </form>
+</div>
+{% endblock %}

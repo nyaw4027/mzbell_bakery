@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Track Delivery{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Track Your Delivery</h2>
+
+  <p><strong>Status:</strong> {{ delivery.get_status_display }}</p>
+  <p><strong>Estimated Arrival:</strong> {{ delivery.estimated_arrival|default:"N/A" }}</p>
+
+  <div id="map" style="height: 400px;" class="rounded shadow"></div>
+</div>
+
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const latitude = {{ delivery.delivery_person.current_latitude|default:0 }};
+  const longitude = {{ delivery.delivery_person.current_longitude|default:0 }};
+
+  const map = L.map("map").setView([latitude, longitude], 15);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19
+  }).addTo(map);
+
+  const marker = L.marker([latitude, longitude]).addTo(map)
+    .bindPopup("Delivery Person Location")
+    .openPopup();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+  .contact-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px 0;
+    margin-bottom: 50px;
+  }
+  
+  .contact-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #25D366, #128C7E);
+  }
+  
+  .contact-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  }
+  
+  .whatsapp-icon {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .contact-card:hover .whatsapp-icon {
+    transform: scale(1.1);
+  }
+  
+  .contact-info h5 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .contact-info .phone {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .contact-info .status {
+    color: #25D366;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .availability-section {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    margin: 40px 0;
+    text-align: center;
+  }
+  
+  .feature-grid {
+    margin-top: 50px;
+  }
+  
+  .feature-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: none;
+    height: 100%;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+  }
+  
+  .feature-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+  }
+  
+  .pulse-animation {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .quick-actions {
+    background: #f8f9fa;
+    padding: 40px 0;
+    margin-top: 50px;
+  }
+  
+  .action-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 10px;
+  }
+  
+  .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    color: white;
+  }
+  
+  .contact-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #667eea;
+  }
+  
+  .stat-label {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 768px) {
+    .contact-hero {
+      padding: 40px 0;
+    }
+    
+    .contact-card {
+      margin-bottom: 20px;
+    }
+    
+    .whatsapp-icon {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+    }
+    
+    .contact-stats {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+</style>
+
+<!-- Hero Section -->
+<div class="contact-hero">
+  <div class="container">
+    <div class="text-center">
+      <h1 class="display-4 mb-3">Get In Touch</h1>
+      <p class="lead">We're here to help you succeed. Reach out to our team!</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Contact Stats -->
+  <div class="contact-stats">
+    <div class="stat-item">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Support Available</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">&lt;5min</div>
+      <div class="stat-label">Response Time</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">1000+</div>
+      <div class="stat-label">Happy Clients</div>
+    </div>
+  </div>
+
+  <!-- Main Contact Cards -->
+  <div class="row justify-content-center">
+    <!-- WhatsApp Contact 1 -->
+    <div class="col-lg-5 col-md-6 col-sm-10 mb-4">
+      <a href="https://wa.me/233531570879" class="contact-card d-flex align-items-center text-decoration-none pulse-animation" target="_blank">
+        <div class="whatsapp-icon">
+          <i class="fab fa-whatsapp fa-lg"></i>
+        </div>
+        <div class="contact-info flex-grow-1">
+          <h5>Contact The CEO</h5>
+          <div class="phone">+233 53 157 0879</div>
+          <div class="status">● Online Now</div>
+        </div>
+        <div class="ms-auto">
+          <i class="fas fa-arrow-right text-muted"></i>
+        </div>
+      </a>
+    </div>
+
+    <!-- WhatsApp Contact 2 -->
+    <div class="col-lg-5 col-md-6 col-sm-10 mb-4">
+      <a href="https://wa.me/233558040216" class="contact-card d-flex align-items-center text-decoration-none pulse-animation" target="_blank">
+        <div class="whatsapp-icon">
+          <i class="fab fa-whatsapp fa-lg"></i>
+        </div>
+        <div class="contact-info flex-grow-1">
+          <h5>Contact The Manager</h5>
+          <div class="phone">+233 55 804 0216</div>
+          <div class="status">● Online Now</div>
+        </div>
+        <div class="ms-auto">
+          <i class="fas fa-arrow-right text-muted"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Availability Section -->
+  <div class="availability-section">
+    <h3 class="mb-3">
+      <i class="fas fa-clock me-2"></i>
+      We're Available
+    </h3>
+    <p class="mb-3">Our dedicated team is ready to assist you</p>
+    <div class="row">
+      <div class="col-md-6">
+        <h5>📞 Phone Support</h5>
+        <p>Every day: 8:00 AM - 8:00 PM</p>
+      </div>
+      <div class="col-md-6">
+        <h5>💬 WhatsApp Chat</h5>
+        <p>Available 24/7 for quick responses</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Grid -->
+  <div class="feature-grid">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h5>Quick Response</h5>
+          <p>Get answers to your questions within minutes, not hours.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h5>Secure Communication</h5>
+          <p>All conversations are encrypted and completely secure.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h5>Expert Team</h5>
+          <p>Speak directly with our experienced professionals.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <div class="container">
+      <div class="text-center">
+        <h3 class="mb-4">Need Something Specific?</h3>
+        <a href="https://wa.me/233531570879?text=I%20need%20support" class="action-btn">
+          <i class="fas fa-headset me-2"></i>Technical Support
+        </a>
+        <a href="https://wa.me/233558040216?text=I%20want%20to%20make%20an%20inquiry" class="action-btn">
+          <i class="fas fa-question-circle me-2"></i>General Inquiry
+        </a>
+        <a href="https://wa.me/233531570879?text=I%20want%20to%20schedule%20a%20meeting" class="action-btn">
+          <i class="fas fa-calendar-alt me-2"></i>Schedule Meeting
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Add some interactive effects
+  document.addEventListener('DOMContentLoaded', function() {
+    // Animate stats on scroll
+    const stats = document.querySelectorAll('.stat-number');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = Math.random() * 0.5 + 's';
+          entry.target.classList.add('pulse-animation');
+        }
+      });
+    });
+
+    stats.forEach(stat => observer.observe(stat));
+
+    // Add click tracking for analytics (optional)
+    document.querySelectorAll('.contact-card').forEach(card => {
+      card.addEventListener('click', function() {
+        console.log('Contact card clicked:', this.href);
+      });
+    });
+  });
+</script>
+
+{% endblock %}

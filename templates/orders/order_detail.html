@@ -1,0 +1,20 @@
+{% if order.latitude and order.longitude %}
+  <h4 class="mt-4 text-lg font-semibold">Delivery Location</h4>
+  <div id="map" style="height: 300px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 10px;"></div>
+
+  <script>
+    function initMap() {
+      const location = { lat: {{ order.latitude }}, lng: {{ order.longitude }} };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: location,
+      });
+      new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "Delivery Location"
+      });
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap"></script>
+{% endif %}

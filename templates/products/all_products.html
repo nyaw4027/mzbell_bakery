@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<section class="py-10 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <h1 class="text-3xl font-bold text-center text-pink-800 mb-10">All Products</h1>
+
+    <!-- Filters Section -->
+    <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+      <select name="category" class="p-2 border rounded">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+            {{ cat.name }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <select name="tag" class="p-2 border rounded">
+        <option value="">All Tags</option>
+        {% for tag in tags %}
+          <option value="{{ tag.id }}" {% if request.GET.tag == tag.id|stringformat:"s" %}selected{% endif %}>
+            {{ tag.name }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <input type="number" name="min_price" class="p-2 border rounded" placeholder="Min Price" value="{{ request.GET.min_price }}">
+      <input type="number" name="max_price" class="p-2 border rounded" placeholder="Max Price" value="{{ request.GET.max_price }}">
+
+      <button type="submit" class="md:col-span-4 bg-pink-700 text-white py-2 px-4 rounded hover:bg-pink-600">
+        Filter Results
+      </button>
+    </form>
+
+    <!-- Product Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {% for product in products %}
+      <div class="bg-white border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+        <div class="h-48 w-full bg-gray-100">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="object-cover w-full h-full">
+          {% elif product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="object-cover w-full h-full">
+          {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="No image available" class="object-cover w-full h-full">
+          {% endif %}
+        </div>
+        <div class="p-4">
+          <h2 class="text-lg font-semibold text-pink-700">{{ product.name }}</h2>
+          <p class="text-sm text-gray-600 mt-1 truncate">{{ product.description }}</p>
+          <p class="text-pink-800 font-bold mt-2">GHS {{ product.price }}</p>
+          <a href="{% url 'products:product_detail' slug=product.slug %}" class="inline-block mt-3 text-sm text-pink-600 hover:underline">View Details</a>
+        </div>
+      </div>
+      {% empty %}
+        <p class="text-center text-gray-500 col-span-4">No products found for the selected filters.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

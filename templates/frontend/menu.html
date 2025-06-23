@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Menu - MzBell's Bakery{% endblock %}
+
+{% block extra_css %}
+<style>
+  .menu-hero {
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .menu-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23f9a8d4" opacity="0.1"/></svg>') repeat;
+    animation: float 20s infinite linear;
+  }
+  
+  @keyframes float {
+    0% { transform: translateX(-50px) translateY(-50px); }
+    100% { transform: translateX(50px) translateY(50px); }
+  }
+  
+  .menu-title {
+    background: linear-gradient(135deg, #be185d, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(190, 24, 93, 0.1);
+    position: relative;
+    z-index: 2;
+  }
+  
+  .category-header {
+    background: linear-gradient(135deg, #be185d, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.2rem;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 15px;
+  }
+  
+  .category-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, #be185d, #ec4899);
+    border-radius: 2px;
+  }
+  
+  .product-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(236, 72, 153, 0.1);
+    position: relative;
+  }
+  
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #be185d, #ec4899, #f9a8d4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(236, 72, 153, 0.2);
+  }
+  
+  .product-card:hover::before {
+    opacity: 1;
+  }
+  
+  .product-image {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    position: relative;
+  }
+  
+  .product-card:hover .product-image {
+    transform: scale(1.1);
+  }
+  
+  .product-image-container {
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .product-image-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(190, 24, 93, 0.1), rgba(236, 72, 153, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .product-card:hover .product-image-container::after {
+    opacity: 1;
+  }
+  
+  .product-title {
+    color: #be185d;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .product-card:hover .product-title {
+    color: #ec4899;
+  }
+  
+  .product-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+  
+  .product-price {
+    color: #be185d;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .product-price::before {
+    content: '💰';
+    margin-right: 5px;
+    font-size: 1.1rem;
+  }
+  
+  .btn-view-details {
+    background: linear-gradient(135deg, #be185d, #ec4899);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-view-details::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .btn-view-details:hover {
+    background: linear-gradient(135deg, #ec4899, #be185d);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+    color: white;
+  }
+  
+  .btn-view-details:hover::before {
+    left: 100%;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+    border-radius: 20px;
+    margin: 40px 0;
+  }
+  
+  .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+  
+  .empty-state-text {
+    font-size: 1.2rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+  
+  .category-section {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease forwards;
+  }
+  
+  .category-section:nth-child(even) {
+    animation-delay: 0.2s;
+  }
+  
+  .category-section:nth-child(odd) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .product-card {
+    animation: slideInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  
+  .product-card:nth-child(1) { animation-delay: 0.1s; }
+  .product-card:nth-child(2) { animation-delay: 0.2s; }
+  .product-card:nth-child(3) { animation-delay: 0.3s; }
+  .product-card:nth-child(4) { animation-delay: 0.4s; }
+  .product-card:nth-child(5) { animation-delay: 0.5s; }
+  .product-card:nth-child(6) { animation-delay: 0.6s; }
+  
+  @keyframes slideInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .menu-title {
+      font-size: 2.5rem;
+    }
+    
+    .category-header {
+      font-size: 1.8rem;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.01);
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="menu-hero py-5">
+  <div class="container">
+    <h1 class="menu-title text-center mb-5">Explore Our Menu</h1>
+  </div>
+</div>
+
+<div class="container py-5">  
+  {% for category in categories %}
+    <div class="category-section">
+      <h2 class="category-header mb-5">{{ category.name }}</h2>
+      <div class="row g-4">
+        {% for product in category.products.all %}
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="product-card h-100">
+              {% if product.get_image %}
+                <div class="product-image-container">
+                  <img src="{{ product.get_image }}" class="product-image w-100" alt="{{ product.name }}">
+                </div>
+              {% endif %}
+              <div class="card-body text-center p-4">
+                <h5 class="product-title">{{ product.name }}</h5>
+                <p class="product-description">{{ product.description|truncatewords:20 }}</p>
+                <p class="product-price">GH₵{{ product.price }}</p>
+              </div>
+              <div class="card-footer bg-transparent text-center border-0 pb-4">
+                <a href="{% url 'products:product_detail' slug=product.slug %}" class="btn btn-view-details">View Details</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% empty %}
+    <div class="empty-state">
+      <div class="empty-state-icon">🧁</div>
+      <p class="empty-state-text">No delicious treats available yet. Please check back soon for our amazing bakery items!</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

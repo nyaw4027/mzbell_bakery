@@ -1,0 +1,463 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart - MZBELL'S BAKERY{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 50%, #fdf4ff 100%);
+            min-height: 100vh;
+        }
+        
+        .cart-item {
+            background: white;
+            border: 2px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-item:hover {
+            border-color: #ec4899;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.15);
+        }
+        
+        .quantity-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .quantity-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .price-highlight {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+    
+    <div class="min-h-screen py-8 px-4 bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Header -->
+            <div class="text-center mb-8 fade-in">
+                <h1 class="text-4xl md:text-5xl font-bold text-Gray-800 mb-2">
+                    🛒 Your Shopping Cart
+                </h1>
+                <p class="text-gray-600 text-lg">Review your sweet selections</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Cart Content (Hidden by default since cart is empty) -->
+            <div class="grid lg:grid-cols-3 gap-8" id="cartContent" style="display: none;">
+                
+                <!-- Cart Items -->
+                <div class="lg:col-span-2 space-y-4" id="cartItems">
+                    <!-- Dynamic cart items will be inserted here -->
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-100 sticky top-8 fade-in">
+                        
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                            📋 Order Summary
+                        </h3>
+
+                        <!-- Summary Details -->
+                        <div class="space-y-4 mb-6">
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-gray-600">Items (<span id="item-count">0</span>)</span>
+                                <span class="font-semibold" id="items-total">GHS 0.00</span>
+                            </div>
+                            
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-gray-600">Delivery</span>
+                                <span class="font-semibold text-green-600">Free 🚚</span>
+                            </div>
+                            
+                            <!-- Discount (Hidden by default) -->
+                            <div class="flex justify-between items-center py-2 text-orange-600" id="discount-row" style="display: none;">
+                                <span>Discount (<span id="discount-code"></span>)</span>
+                                <span class="font-semibold" id="discount-amount">-GHS 0.00</span>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="flex justify-between items-center py-2 text-lg font-bold">
+                                <span>Total</span>
+                                <span class="price-highlight text-2xl" id="grand-total">GHS 0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Promo Code -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                🎟️ Have a promo code?
+                            </label>
+                            <div class="flex gap-2">
+                                <input type="text" id="promo-input" placeholder="Enter code" 
+                                       class="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-pink-500">
+                                <button onclick="applyPromoCode()" 
+                                        class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors">
+                                    Apply
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">💡 Try "SWEET10" for 10% off!</p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-3">
+                            <button onclick="proceedToCheckout()" 
+                                    class="btn-secondary w-full py-3 text-white font-semibold rounded-lg">
+                                💳 Proceed to Checkout
+                            </button>
+                            
+                            <button onclick="continueShopping()" 
+                                    class="btn-primary w-full py-3 text-white font-semibold rounded-lg">
+                                🛍️ Continue Shopping
+                            </button>
+                        </div>
+
+                        <!-- Security Badge -->
+                        <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-center">
+                            <div class="flex items-center justify-center text-green-700 text-sm font-semibold">
+                                🔒 Secure Checkout
+                            </div>
+                            <p class="text-xs text-green-600 mt-1">Your payment is protected</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty Cart (Shown by default) -->
+            <div class="bg-white rounded-xl p-12 text-center shadow-lg fade-in" id="emptyCart">
+                <div class="text-6xl mb-4">🛒</div>
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">Your cart is empty</h2>
+                <p class="text-gray-600 mb-6">Add some delicious treats to get started!</p>
+                <button onclick="continueShopping()" 
+                        class="btn-primary inline-block px-8 py-3 text-white font-semibold rounded-lg">
+                    🧁 Start Shopping
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Empty cart data - will be populated when users add items
+        let cartItems = {};
+        let discountPercent = 0;
+        let discountCode = '';
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Function to add item to cart (to be called from other pages)
+        function addToCart(itemId, name, price, image, category) {
+            if (cartItems[itemId]) {
+                cartItems[itemId].quantity++;
+                showNotification(`${name} quantity updated!`);
+            } else {
+                cartItems[itemId] = {
+                    name: name,
+                    price: price,
+                    quantity: 1,
+                    image: image,
+                    category: category
+                };
+                showNotification(`${name} added to cart!`);
+            }
+            
+            updateCartDisplay();
+            checkEmptyCart();
+        }
+
+        // Create cart item HTML
+        function createCartItemHTML(itemId, item) {
+            return `
+                <div class="cart-item rounded-xl p-6 fade-in" id="item-${itemId}">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                        
+                        <!-- Product Image -->
+                        <img src="${item.image}" 
+                             alt="${item.name}" 
+                             class="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover shadow-md">
+                        
+                        <!-- Product Info -->
+                        <div class="flex-grow min-w-0">
+                            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">
+                                ${item.name}
+                            </h3>
+                            <p class="text-gray-600 text-sm mb-2">${item.description || 'Delicious bakery item'}</p>
+                            <span class="inline-block px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-medium">
+                                ${item.category || 'Bakery'}
+                            </span>
+                        </div>
+                        
+                        <!-- Quantity & Price -->
+                        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                            
+                            <!-- Quantity Controls -->
+                            <div class="flex items-center bg-gray-100 rounded-lg p-1">
+                                <button onclick="updateQuantity(${itemId}, 'decrease')" 
+                                        class="quantity-btn w-8 h-8 bg-pink-500 text-white rounded-md flex items-center justify-center font-bold hover:bg-pink-600">
+                                    −
+                                </button>
+                                <span class="w-12 text-center font-semibold text-gray-800" id="quantity-${itemId}">${item.quantity}</span>
+                                <button onclick="updateQuantity(${itemId}, 'increase')" 
+                                        class="quantity-btn w-8 h-8 bg-pink-500 text-white rounded-md flex items-center justify-center font-bold hover:bg-pink-600">
+                                    +
+                                </button>
+                            </div>
+                            
+                            <!-- Price Info -->
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">GHS ${item.price.toFixed(2)} each</div>
+                                <div class="price-highlight text-lg md:text-xl" id="subtotal-${itemId}">GHS ${(item.price * item.quantity).toFixed(2)}</div>
+                            </div>
+                            
+                            <!-- Remove Button -->
+                            <button onclick="removeItem(${itemId})" 
+                                    class="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center justify-center transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                            
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update quantity
+        function updateQuantity(itemId, action) {
+            if (!cartItems[itemId]) return;
+            
+            if (action === 'increase') {
+                cartItems[itemId].quantity++;
+            } else if (action === 'decrease' && cartItems[itemId].quantity > 1) {
+                cartItems[itemId].quantity--;
+            }
+            
+            updateCartDisplay();
+            showNotification('Quantity updated!');
+        }
+
+        // Remove item
+        function removeItem(itemId) {
+            if (cartItems[itemId]) {
+                const itemName = cartItems[itemId].name;
+                delete cartItems[itemId];
+                
+                const itemElement = document.getElementById(`item-${itemId}`);
+                if (itemElement) {
+                    itemElement.style.opacity = '0';
+                    itemElement.style.transform = 'translateX(-100%)';
+                    setTimeout(() => {
+                        itemElement.remove();
+                        updateCartDisplay();
+                        checkEmptyCart();
+                    }, 300);
+                }
+                
+                showNotification(`${itemName} removed from cart`);
+            }
+        }
+
+        // Apply promo code
+        function applyPromoCode() {
+            const promoInput = document.getElementById('promo-input');
+            const code = promoInput.value.trim().toUpperCase();
+            
+            if (code === 'SWEET10') {
+                discountPercent = 10;
+                discountCode = code;
+                promoInput.value = '';
+                updateCartDisplay();
+                showNotification('Promo code applied! 10% discount');
+            } else if (code === 'WELCOME15') {
+                discountPercent = 15;
+                discountCode = code;
+                promoInput.value = '';
+                updateCartDisplay();
+                showNotification('Welcome discount applied! 15% off');
+            } else if (code) {
+                showNotification('Invalid promo code', 'error');
+            }
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            let itemCount = 0;
+            let subtotal = 0;
+
+            // Clear and rebuild cart items
+            const cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = '';
+
+            // Add all items to the cart display
+            for (let itemId in cartItems) {
+                const item = cartItems[itemId];
+                itemCount += item.quantity;
+                subtotal += item.price * item.quantity;
+                
+                // Add item to DOM
+                cartItemsContainer.innerHTML += createCartItemHTML(itemId, item);
+            }
+
+            // Update summary
+            document.getElementById('item-count').textContent = itemCount;
+            document.getElementById('items-total').textContent = `GHS ${subtotal.toFixed(2)}`;
+
+            // Calculate discount
+            const discountAmount = subtotal * (discountPercent / 100);
+            const total = subtotal - discountAmount;
+
+            // Show/hide discount
+            const discountRow = document.getElementById('discount-row');
+            if (discountPercent > 0) {
+                discountRow.style.display = 'flex';
+                document.getElementById('discount-code').textContent = discountCode;
+                document.getElementById('discount-amount').textContent = `-GHS ${discountAmount.toFixed(2)}`;
+            } else {
+                discountRow.style.display = 'none';
+            }
+
+            document.getElementById('grand-total').textContent = `GHS ${total.toFixed(2)}`;
+        }
+
+        // Check if cart is empty
+        function checkEmptyCart() {
+            const isEmpty = Object.keys(cartItems).length === 0;
+            const cartContent = document.getElementById('cartContent');
+            const emptyCart = document.getElementById('emptyCart');
+            
+            if (isEmpty) {
+                cartContent.style.display = 'none';
+                emptyCart.style.display = 'block';
+            } else {
+                cartContent.style.display = 'grid';
+                emptyCart.style.display = 'none';
+            }
+        }
+
+        // Continue shopping
+        function continueShopping() {
+            showNotification('Redirecting to shop...');
+            setTimeout(() => {
+                window.location.href = '{% url "home" %}'; // Django URL pattern
+            }, 1000);
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            if (Object.keys(cartItems).length === 0) {
+                showNotification('Your cart is empty!', 'error');
+                return;
+            }
+            
+            showNotification('Proceeding to checkout...');
+            setTimeout(() => {
+                window.location.href = '{% url "orders:checkout" %}'; // Django URL pattern
+            }, 1000);
+        }
+
+        // Initialize cart display
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartDisplay();
+            checkEmptyCart();
+        });
+
+        // Make addToCart function globally available for other pages to use
+        window.addToCart = addToCart;
+    </script>
+
+{% endblock %}

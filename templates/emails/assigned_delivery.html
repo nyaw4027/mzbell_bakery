@@ -1,0 +1,28 @@
+<div style="background: #ffffff; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); font-family: Arial, sans-serif;">
+  <h2 style="color: #e91e63; margin-bottom: 20px;">🚚 New Delivery Assignment</h2>
+
+  <p style="color: #333;">Hello {{ delivery_person.user.first_name }},</p>
+
+  <p style="color: #333;">
+    You’ve been assigned a new delivery from <strong>MzBell’s Bakery</strong>. Please see the details below:
+  </p>
+
+  <ul style="color: #333; line-height: 1.6;">
+    <li><strong>Order ID:</strong> {{ order.id }}</li>
+    <li><strong>Customer:</strong> {{ order.user.get_full_name }}</li>
+    <li><strong>Delivery Zone:</strong> {{ zone.name }}</li>
+    <li><strong>Estimated Arrival:</strong> {{ estimated }}</li>
+  </ul>
+
+  <a href="https://mzbellsbakery.com/delivery/my-deliveries/" style="background-color: #e91e63; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; font-weight: bold;">
+    View Delivery Dashboard
+  </a>
+
+  <p style="color: #333; margin-top: 20px;">
+    Make sure to start the delivery promptly and update your progress in the system.
+  </p>
+
+  <div style="margin-top: 40px; font-size: 12px; color: #999; text-align: center;">
+    MzBell’s Bakery Delivery System &copy; {{ now|date:"Y" }}
+  </div>
+</div>

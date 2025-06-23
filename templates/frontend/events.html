@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block title %}Events & Celebrations - MZBELL'S BAKERY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+        <h1 class="text-5xl font-bold text-pink-600 mb-6">Events & Celebrations</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Make your special moments even sweeter with our custom cakes and desserts. 
+            From intimate gatherings to grand celebrations, we create memorable treats for every occasion.
+        </p>
+    </div>
+
+    <!-- Event Categories -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <!-- Weddings -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="h-48 bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-6xl mb-2">💒</div>
+                    <h3 class="text-2xl font-bold text-gray-800">Weddings</h3>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                    Elegant wedding cakes that make your special day unforgettable. Multi-tier designs, 
+                    custom flavors, and beautiful decorations to match your wedding theme.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li>• Multi-tier wedding cakes</li>
+                    <li>• Cake cutting ceremonies</li>
+                    <li>• Bridal shower treats</li>
+                    <li>• Wedding favors</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Birthdays -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="h-48 bg-gradient-to-br from-yellow-200 to-orange-300 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-6xl mb-2">🎂</div>
+                    <h3 class="text-2xl font-bold text-gray-800">Birthdays</h3>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                    Custom birthday cakes for all ages! From fun kids' themes to elegant adult celebrations, 
+                    we create cakes that perfectly capture the birthday person's personality.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li>• Character-themed cakes</li>
+                    <li>• Number and age cakes</li>
+                    <li>• Birthday cupcake towers</li>
+                    <li>• Surprise party desserts</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Corporate Events -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="h-48 bg-gradient-to-br from-blue-200 to-indigo-300 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-6xl mb-2">🏢</div>
+                    <h3 class="text-2xl font-bold text-gray-800">Corporate</h3>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                    Professional desserts for corporate events, meetings, and celebrations. 
+                    Logo cakes, branded treats, and elegant presentations for your business needs.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li>• Company logo cakes</li>
+                    <li>• Office party desserts</li>
+                    <li>• Product launch treats</li>
+                    <li>• Employee appreciation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Baby Showers -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="h-48 bg-gradient-to-br from-green-200 to-teal-300 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-6xl mb-2">👶</div>
+                    <h3 class="text-2xl font-bold text-gray-800">Baby Showers</h3>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                    Adorable baby shower cakes and treats to celebrate new arrivals. 
+                    Gender reveal cakes, cute baby-themed designs, and sweet treats for guests.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li>• Gender reveal cakes</li>
+                    <li>• Baby-themed decorations</li>
+                    <li>• Diaper cake alternatives</li>
+                    <li>• Pastel color schemes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Graduations -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="h-48 bg-gradient-to-br from-purple-200 to-pink-300 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-6xl mb-2">🎓</div>
+                    <h3 class="text-2xl font-bold text-gray-800">Graduations</h3>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                    Celebrate academic achievements with custom graduation cakes. 
+                    School colors, diploma designs, and caps-off to your graduate's success!
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li>• School-themed designs</li>
+                    <li>• Cap and diploma cakes</li>
+                    <li>• Class of 2024/2025 cakes</li>
+                    <li>• Achievement celebrations</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Holidays -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="h-48 bg-gradient-to-br from-red-200 to-pink-300 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-6xl mb-2">🎄</div>
+                    <h3 class="text-2xl font-bold text-gray-800">Holidays</h3>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-600 mb-4">
+                    Seasonal treats for all holidays throughout the year. 
+                    From Christmas cookies to Halloween cakes, we celebrate every season with style.
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li>• Christmas desserts</li>
+                    <li>• Halloween treats</li>
+                    <li>• Valentine's specials</li>
+                    <li>• Easter celebrations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Section -->
+    <div class="bg-gray-50 rounded-lg p-8 mb-16">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">How We Make Your Event Special</h2>
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white font-bold text-xl">1</span>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Consultation</h4>
+                <p class="text-gray-600 text-sm">Discuss your vision, preferences, and event details with our expert bakers.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white font-bold text-xl">2</span>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Design</h4>
+                <p class="text-gray-600 text-sm">Create custom designs that perfectly match your event theme and style.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white font-bold text-xl">3</span>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Creation</h4>
+                <p class="text-gray-600 text-sm">Hand-craft your order using premium ingredients and artistic techniques.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white font-bold text-xl">4</span>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-2">Delivery</h4>
+                <p class="text-gray-600 text-sm">Safely deliver or prepare for pickup to ensure your dessert is perfect.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Event Gallery</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                <span class="text-gray-500">Wedding Cake Photo</span>
+            </div>
+            <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                <span class="text-gray-500">Birthday Cake Photo</span>
+            </div>
+            <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                <span class="text-gray-500">Corporate Event Photo</span>
+            </div>
+            <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                <span class="text-gray-500">Baby Shower Photo</span>
+            </div>
+            <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                <span class="text-gray-500">Graduation Photo</span>
+            </div>
+            <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                <span class="text-gray-500">Holiday Treats Photo</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="bg-pink-50 rounded-lg p-8 mb-16">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">What Our Clients Say</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 text-xl">★★★★★</div>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    "MZBELL'S created the most beautiful wedding cake for our special day. 
+                    It was not only stunning but tasted absolutely incredible. All our guests were raving about it!"
+                </p>
+                <p class="font-semibold text-gray-800">- Sarah & Michael</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 text-xl">★★★★★</div>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    "The custom birthday cake for my daughter's unicorn party was beyond our expectations. 
+                    The attention to detail and the taste were perfect. We'll definitely be back!"
+                </p>
+                <p class="font-semibold text-gray-800">- Jennifer L.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg p-12">
+        <h2 class="text-3xl font-bold mb-4">Ready to Plan Your Event?</h2>
+        <p class="text-xl mb-8">Let's create something amazing together for your special occasion.</p>
+        <div class="space-y-4 md:space-y-0 md:space-x-4 md:flex md:justify-center">
+            <a href="{% url 'frontend:custom_order' %}" 
+               class="inline-block bg-white text-pink-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300">
+                Place Custom Order
+            </a>
+            <a href="{% url 'frontend:contact' %}" 
+               class="inline-block border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-pink-600 transition duration-300">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
