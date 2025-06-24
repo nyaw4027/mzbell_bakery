@@ -6,232 +6,71 @@
 
 {% block title %}Welcome to MZBell's Bakery{% endblock %}
 
-{% block meta %}
-  <meta name="description" content="MzBell's Bakery - Freshly baked cakes, pastries, and custom orders made with love in Ghana.">
-  <meta name="keywords" content="MzBell Bakery, cakes, Ghana bakery, custom pastries, wedding cakes, birthday treats">
-  <meta name="author" content="MzBell's Bakery">
-  <link rel="canonical" href="{{ request.build_absolute_uri }}">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="MzBell's Bakery - Freshly Baked Goodness">
-  <meta property="og:description" content="Order handcrafted cakes and pastries online. Custom orders available!">
-  <meta property="og:url" content="{{ request.build_absolute_uri }}">
-  <meta property="og:site_name" content="MzBell's Bakery">
-  <meta property="og:image" content="{% if featured_products and featured_products.0.get_image %}{{ featured_products.0.get_image }}{% else %}{% static 'images/default-placeholder.png' %}{% endif %}">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MzBell's Bakery - Freshly Baked Goodness">
-  <meta name="twitter:description" content="Delicious cakes and pastries for every occasion.">
-  <meta name="twitter:image" content="{% if featured_products and featured_products.0.get_image %}{{ featured_products.0.get_image }}{% else %}{% static 'images/default-placeholder.png' %}{% endif %}">
-{% endblock %}
-
-{% block styles %}
-  <link rel="stylesheet" href="{% static 'css/home.css' %}">
-  <style>
-    .card:hover {
-      transform: scale(1.02);
-      transition: transform 0.3s ease;
-    }
-    
-    /* Button loading state */
-    .btn.loading {
-      position: relative;
-      color: transparent;
-    }
-    
-    .btn.loading:after {
-      content: "";
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      top: 50%;
-      left: 50%;
-      margin-left: -8px;
-      margin-top: -8px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      border-top-color: #ffffff;
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
-{% endblock %}
-
 {% block content %}
-<!-- Hero Section -->
-<section class="py-5 text-center" style="background: var(--cream);">
-  <div class="container">
-    <h1 class="font-display fw-bold mb-3" style="color: var(--primary-color); font-size: 3rem;">
-      Freshly Baked Goodness Every Day
-    </h1>
-    <p class="lead text-muted mb-4">Handcrafted pastries, cakes, and custom treats made with love in Ghana.</p>
-    <a href="{% url 'frontend:product_list' %}" class="btn btn-primary-custom me-2 nav-btn" data-action="shop">Shop Now</a>
-    <a href="{% url 'frontend:custom_order_form' %}" class="btn btn-outline-custom nav-btn" data-action="custom">Custom Order</a>
-    <a href="{% url 'users:dashboard' %}" class="btn btn-outline-dark nav-btn" data-action="dashboard">Dashboard</a>
-  </div>
-</section>
-
-<!-- Highlights Section -->
-<section class="py-5">
-  <div class="container">
-    <div class="row text-center">
-      <div class="col-md-4 mb-4">
-        <i class="fas fa-birthday-cake fa-3x mb-3" style="color: var(--primary-color);"></i>
-        <h4 class="font-display">Signature Cakes</h4>
-        <p class="text-muted">Delicious cakes for every occasion—birthday, wedding, or just because.</p>
-      </div>
-      <div class="col-md-4 mb-4">
-        <i class="fas fa-cookie fa-3x mb-3" style="color: var(--primary-color);"></i>
-        <h4 class="font-display">Pastries & Treats</h4>
-        <p class="text-muted">Freshly baked pastries, cookies, and muffins every morning.</p>
-      </div>
-      <div class="col-md-4 mb-4">
-        <i class="fas fa-magic fa-3x mb-3" style="color: var(--primary-color);"></i>
-        <h4 class="font-display">Custom Orders</h4>
-        <p class="text-muted">Get creative with personalized orders tailored to your event or craving.</p>
-      </div>
+<div class="bg-yellow-50 py-10">
+  <div class="container mx-auto px-4 text-center">
+    <h1 class="text-4xl font-bold text-pink-800 mb-4">Freshly Baked Goodness Every Day</h1>
+    <p class="text-lg mb-6">Handcrafted pastries, cakes, and custom treats made with love in Ghana.</p>
+    <div class="space-x-4">
+      <a href="{% url 'shop' %}" class="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded">Shop Now</a>
+      <a href="{% url 'custom_order' %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded">Custom Order</a>
+      <a href="{% url 'dashboard' %}" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded">Dashboard</a>
     </div>
   </div>
-</section>
+</div>
 
-<!-- Featured Products -->
-<section class="py-5" style="background: var(--cream);">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="font-display fw-bold" style="color: var(--primary-color);">Featured Products</h2>
-      <a href="{% url 'frontend:product_list' %}" class="btn btn-outline-custom btn-sm nav-btn" data-action="view-all">View All</a>
+<div class="container mx-auto px-4 py-10">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div>
+      <h2 class="text-xl font-bold text-pink-700">Signature Cakes</h2>
+      <p>Delicious cakes for every occasion—birthday, wedding, or just because.</p>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div>
+      <h2 class="text-xl font-bold text-yellow-700">Pastries & Treats</h2>
+      <p>Freshly baked pastries, cookies, and muffins every morning.</p>
+    </div>
+    <div>
+      <h2 class="text-xl font-bold text-purple-700">Custom Orders</h2>
+      <p>Get creative with personalized orders tailored to your event or craving.</p>
+    </div>
+  </div>
+</div>
+
+<div class="bg-white py-10">
+  <div class="container mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Featured Products</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {% for product in featured_products %}
-      <div class="col">
-        <div class="card h-100 shadow-sm border-0 rounded-4">
+        <div class="bg-white border rounded-lg shadow p-4">
           {% if product.image %}
-            <img src="{{ product.image.url }}" class="card-img-top rounded-top-4" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-48 w-full object-cover rounded mb-2">
           {% elif product.image_url %}
-            <img src="{{ product.image_url }}" class="card-img-top rounded-top-4" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="h-48 w-full object-cover rounded mb-2">
           {% else %}
-            <img src="{% static 'images/default-placeholder.png' %}" class="card-img-top rounded-top-4" alt="No image available" style="height: 250px; object-fit: cover;">
+            <div class="h-48 w-full bg-gray-200 flex items-center justify-center rounded mb-2 text-gray-500">No image available</div>
           {% endif %}
-          <div class="card-body">
-            <h5 class="card-title fw-bold">{{ product.name }}</h5>
-            <p class="card-text text-muted small">{{ product.description|truncatewords:20 }}</p>
-            <p class="card-text fw-semibold text-success">GHS {{ product.price|floatformat:2 }}</p>
-          </div>
-          <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
-            <form method="post" action="{% url 'add_to_cart' product.id %}" class="cart-form">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-primary btn-sm cart-btn" data-product-id="{{ product.id }}">Add to Cart</button>
-            </form>
-            <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-secondary btn-sm nav-btn" data-action="view-product">View</a>
-          </div>
+          <h3 class="text-lg font-bold">{{ product.name }}</h3>
+          <p class="text-sm text-gray-600 mb-2">{{ product.description|truncatewords:20 }}</p>
+          <p class="text-pink-700 font-semibold">GHS {{ product.price|floatformat:2 }}</p>
+          <form method="post" action="{% url 'add_to_cart' product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="mt-2 bg-pink-600 hover:bg-pink-700 text-white px-3 py-1 rounded">Add to Cart</button>
+            <a href="{% url 'product_detail' product.slug %}" class="ml-2 text-sm text-blue-600 underline">View</a>
+          </form>
         </div>
-      </div>
       {% empty %}
-      <p class="text-muted">No featured products available at this time.</p>
+        <p>No featured products available at this time.</p>
       {% endfor %}
     </div>
   </div>
-</section>
+</div>
 
-<!-- Call to Action -->
-<section class="py-5 text-center">
-  <div class="container">
-    <h2 class="font-display fw-bold mb-3">Need Something Unique?</h2>
-    <p class="lead text-muted mb-4">Let us bring your sweet vision to life with our custom bakery services.</p>
-    <a href="{% url 'frontend:custom_order_form' %}" class="btn btn-primary-custom nav-btn" data-action="start-custom">Start Custom Order</a>
+<div class="bg-pink-50 py-10">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-2xl font-bold mb-2">Need Something Unique?</h2>
+    <p class="mb-4">Let us bring your sweet vision to life with our custom bakery services.</p>
+    <a href="{% url 'custom_order' %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded">Start Custom Order</a>
   </div>
-</section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Prevent double-clicks on navigation buttons
-    const navButtons = document.querySelectorAll('.nav-btn');
-    const clickedButtons = new Set();
-    
-    navButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            const buttonId = this.getAttribute('data-action') || this.href;
-            
-            // Check if this button was recently clicked
-            if (clickedButtons.has(buttonId)) {
-                e.preventDefault();
-                return false;
-            }
-            
-            // Add loading state
-            this.classList.add('loading');
-            this.disabled = true;
-            
-            // Track this click
-            clickedButtons.add(buttonId);
-            
-            // Remove from tracking after 2 seconds
-            setTimeout(() => {
-                clickedButtons.delete(buttonId);
-                this.classList.remove('loading');
-                this.disabled = false;
-            }, 2000);
-        });
-    });
-    
-    // Handle cart form submissions
-    const cartForms = document.querySelectorAll('.cart-form');
-    const cartClicks = new Set();
-    
-    cartForms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            const productId = this.querySelector('.cart-btn').getAttribute('data-product-id');
-            const button = this.querySelector('.cart-btn');
-            
-            // Prevent duplicate submissions
-            if (cartClicks.has(productId)) {
-                e.preventDefault();
-                return false;
-            }
-            
-            // Add loading state
-            button.classList.add('loading');
-            button.disabled = true;
-            
-            // Track this submission
-            cartClicks.add(productId);
-            
-            // Remove from tracking after 3 seconds
-            setTimeout(() => {
-                cartClicks.delete(productId);
-                button.classList.remove('loading');
-                button.disabled = false;
-            }, 3000);
-        });
-    });
-    
-    // Log page interactions for debugging (optional)
-    if (window.console && console.log) {
-        const logInteraction = (action, element) => {
-            console.log(`[MZBell] User interaction: ${action}`, {
-                timestamp: new Date().toISOString(),
-                element: element.tagName,
-                url: element.href || 'form submission'
-            });
-        };
-        
-        navButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                logInteraction('navigation', this);
-            });
-        });
-        
-        cartForms.forEach(form => {
-            form.addEventListener('submit', function() {
-                logInteraction('add_to_cart', this);
-            });
-        });
-    }
-});
-</script>
+</div>
 {% endblock %}
+
