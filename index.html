@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}Welcome to MZBell's Bakery{% endblock %}
+
+{% block meta %}
+  <meta name="description" content="MzBell's Bakery - Freshly baked cakes, pastries, and custom orders made with love in Ghana.">
+  <meta name="keywords" content="MzBell Bakery, cakes, Ghana bakery, custom pastries, wedding cakes, birthday treats">
+  <meta name="author" content="MzBell's Bakery">
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MzBell's Bakery - Freshly Baked Goodness">
+  <meta property="og:description" content="Order handcrafted cakes and pastries online. Custom orders available!">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:site_name" content="MzBell's Bakery">
+  <meta property="og:image" content="{% if featured_products and featured_products.0.get_image %}{{ featured_products.0.get_image }}{% else %}{% static 'images/default-placeholder.png' %}{% endif %}">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MzBell's Bakery - Freshly Baked Goodness">
+  <meta name="twitter:description" content="Delicious cakes and pastries for every occasion.">
+  <meta name="twitter:image" content="{% if featured_products and featured_products.0.get_image %}{{ featured_products.0.get_image }}{% else %}{% static 'images/default-placeholder.png' %}{% endif %}">
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <style>
+    .card:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+    }
+    
+    /* Button loading state */
+    .btn.loading {
+      position: relative;
+      color: transparent;
+    }
+    
+    .btn.loading:after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: #ffffff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 text-center" style="background: var(--cream);">
+  <div class="container">
+    <h1 class="font-display fw-bold mb-3" style="color: var(--primary-color); font-size: 3rem;">
+      Freshly Baked Goodness Every Day
+    </h1>
+    <p class="lead text-muted mb-4">Handcrafted pastries, cakes, and custom treats made with love in Ghana.</p>
+    <a href="{% url 'frontend:product_list' %}" class="btn btn-primary-custom me-2 nav-btn" data-action="shop">Shop Now</a>
+    <a href="{% url 'frontend:custom_order_form' %}" class="btn btn-outline-custom nav-btn" data-action="custom">Custom Order</a>
+    <a href="{% url 'users:dashboard' %}" class="btn btn-outline-dark nav-btn" data-action="dashboard">Dashboard</a>
+  </div>
+</section>
+
+<!-- Highlights Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 mb-4">
+        <i class="fas fa-birthday-cake fa-3x mb-3" style="color: var(--primary-color);"></i>
+        <h4 class="font-display">Signature Cakes</h4>
+        <p class="text-muted">Delicious cakes for every occasion—birthday, wedding, or just because.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <i class="fas fa-cookie fa-3x mb-3" style="color: var(--primary-color);"></i>
+        <h4 class="font-display">Pastries & Treats</h4>
+        <p class="text-muted">Freshly baked pastries, cookies, and muffins every morning.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <i class="fas fa-magic fa-3x mb-3" style="color: var(--primary-color);"></i>
+        <h4 class="font-display">Custom Orders</h4>
+        <p class="text-muted">Get creative with personalized orders tailored to your event or craving.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="py-5" style="background: var(--cream);">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="font-display fw-bold" style="color: var(--primary-color);">Featured Products</h2>
+      <a href="{% url 'frontend:product_list' %}" class="btn btn-outline-custom btn-sm nav-btn" data-action="view-all">View All</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for product in featured_products %}
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top rounded-top-4" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+          {% elif product.image_url %}
+            <img src="{{ product.image_url }}" class="card-img-top rounded-top-4" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+          {% else %}
+            <img src="{% static 'images/default-placeholder.png' %}" class="card-img-top rounded-top-4" alt="No image available" style="height: 250px; object-fit: cover;">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+            <p class="card-text text-muted small">{{ product.description|truncatewords:20 }}</p>
+            <p class="card-text fw-semibold text-success">GHS {{ product.price|floatformat:2 }}</p>
+          </div>
+          <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
+            <form method="post" action="{% url 'add_to_cart' product.id %}" class="cart-form">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary btn-sm cart-btn" data-product-id="{{ product.id }}">Add to Cart</button>
+            </form>
+            <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-secondary btn-sm nav-btn" data-action="view-product">View</a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No featured products available at this time.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 text-center">
+  <div class="container">
+    <h2 class="font-display fw-bold mb-3">Need Something Unique?</h2>
+    <p class="lead text-muted mb-4">Let us bring your sweet vision to life with our custom bakery services.</p>
+    <a href="{% url 'frontend:custom_order_form' %}" class="btn btn-primary-custom nav-btn" data-action="start-custom">Start Custom Order</a>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Prevent double-clicks on navigation buttons
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const clickedButtons = new Set();
+    
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const buttonId = this.getAttribute('data-action') || this.href;
+            
+            // Check if this button was recently clicked
+            if (clickedButtons.has(buttonId)) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Add loading state
+            this.classList.add('loading');
+            this.disabled = true;
+            
+            // Track this click
+            clickedButtons.add(buttonId);
+            
+            // Remove from tracking after 2 seconds
+            setTimeout(() => {
+                clickedButtons.delete(buttonId);
+                this.classList.remove('loading');
+                this.disabled = false;
+            }, 2000);
+        });
+    });
+    
+    // Handle cart form submissions
+    const cartForms = document.querySelectorAll('.cart-form');
+    const cartClicks = new Set();
+    
+    cartForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const productId = this.querySelector('.cart-btn').getAttribute('data-product-id');
+            const button = this.querySelector('.cart-btn');
+            
+            // Prevent duplicate submissions
+            if (cartClicks.has(productId)) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Add loading state
+            button.classList.add('loading');
+            button.disabled = true;
+            
+            // Track this submission
+            cartClicks.add(productId);
+            
+            // Remove from tracking after 3 seconds
+            setTimeout(() => {
+                cartClicks.delete(productId);
+                button.classList.remove('loading');
+                button.disabled = false;
+            }, 3000);
+        });
+    });
+    
+    // Log page interactions for debugging (optional)
+    if (window.console && console.log) {
+        const logInteraction = (action, element) => {
+            console.log(`[MZBell] User interaction: ${action}`, {
+                timestamp: new Date().toISOString(),
+                element: element.tagName,
+                url: element.href || 'form submission'
+            });
+        };
+        
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                logInteraction('navigation', this);
+            });
+        });
+        
+        cartForms.forEach(form => {
+            form.addEventListener('submit', function() {
+                logInteraction('add_to_cart', this);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
