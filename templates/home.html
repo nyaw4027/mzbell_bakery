@@ -70,8 +70,8 @@
       Freshly Baked Goodness Every Day
     </h1>
     <p class="lead text-muted mb-4">Handcrafted pastries, cakes, and custom treats made with love in Ghana.</p>
-    <a href="{% url 'products:product_list' %}" class="btn btn-primary-custom me-2 nav-btn" data-action="shop">Shop Now</a>
-    <a href="{% url 'products:custom_order_form' %}" class="btn btn-outline-custom nav-btn" data-action="custom">Custom Order</a>
+    <a href="{% url 'frontend:product_list' %}" class="btn btn-primary-custom me-2 nav-btn" data-action="shop">Shop Now</a>
+    <a href="{% url 'frontend:custom_order_form' %}" class="btn btn-outline-custom nav-btn" data-action="custom">Custom Order</a>
     <a href="{% url 'users:dashboard' %}" class="btn btn-outline-dark nav-btn" data-action="dashboard">Dashboard</a>
   </div>
 </section>
@@ -104,7 +104,7 @@
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="font-display fw-bold" style="color: var(--primary-color);">Featured Products</h2>
-      <a href="{% url 'products:product_list' %}" class="btn btn-outline-custom btn-sm nav-btn" data-action="view-all">View All</a>
+      <a href="{% url 'frontend:product_list' %}" class="btn btn-outline-custom btn-sm nav-btn" data-action="view-all">View All</a>
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for product in featured_products %}
@@ -143,7 +143,7 @@
   <div class="container">
     <h2 class="font-display fw-bold mb-3">Need Something Unique?</h2>
     <p class="lead text-muted mb-4">Let us bring your sweet vision to life with our custom bakery services.</p>
-    <a href="{% url 'products:custom_order_form' %}" class="btn btn-primary-custom nav-btn" data-action="start-custom">Start Custom Order</a>
+    <a href="{% url 'frontend:custom_order_form' %}" class="btn btn-primary-custom nav-btn" data-action="start-custom">Start Custom Order</a>
   </div>
 </section>
 

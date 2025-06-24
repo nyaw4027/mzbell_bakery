@@ -14,7 +14,8 @@ def user_avatar_upload_path(instance, filename):
 class Profile(models.Model):
     """Extended user profile with additional info."""
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to=user_avatar_upload_path, blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+
     phone = models.CharField(max_length=20, blank=True)
     bio = models.TextField(blank=True)
     address = models.CharField(max_length=255, blank=True)

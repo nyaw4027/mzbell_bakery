@@ -216,7 +216,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'frontend:home' %}">
+            <a class="navbar-brand" href="{% url 'home' %}">
                 <i class="fas fa-birthday-cake me-2"></i>MZBell's Bakery
             </a>
             
@@ -230,7 +230,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frontend:home' %}">
+                        <a class="nav-link" href="{% url 'home' %}">
                             <i class="fas fa-home me-1"></i>Home
                         </a>
                     </li>
@@ -240,9 +240,9 @@
                             <i class="fas fa-cookie-bite me-1"></i>Products
                         </a>
                         <ul class="dropdown-menu">
-                           <a class="dropdown-item" href="{% url 'products:product_list' %}">All Products</a>
-                            <li><a class="dropdown-item" href="{% url 'products:category_list' %}">Categories</a></li>
-                            <li><a class="dropdown-item" href="{% url 'products:featured_products' %}">Featured</a></li>
+                           <a class="dropdown-item" href="{% url 'frontend:product_list' %}">All Products</a>
+                            <li><a class="dropdown-item" href="{% url 'frontend:category_list' %}">Categories</a></li>
+                            <li><a class="dropdown-item" href="{% url 'frontend:featured_products' %}">Featured</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -295,7 +295,7 @@
                     {% endif %}
                     
                     <li class="nav-item">
-                        <a class="nav-link position-relative" href="{% url 'products:cart' %}">
+                        <a class="nav-link position-relative" href="{% url 'frontend:cart' %}">
                             <i class="fas fa-shopping-cart me-1"></i>Cart
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge" id="cart-count">
                                 {{ request.session.cart_count|default:0 }}
@@ -345,8 +345,8 @@
                     <h5 class="footer-title">Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="{% url 'frontend:home' %}" class="footer-link">Home</a></li>
-                        <li><a href="{% url 'products:product_list' %}" class="footer-link">Products</a></li>
-                        <li><a href="{% url 'products:menu' %}" class="footer-link">Menu</a></li>
+                        <li><a href="{% url 'frontend:product_list' %}" class="footer-link">Products</a></li>
+                        <li><a href="{% url 'frontend:menu' %}" class="footer-link">Menu</a></li>
                         <li><a href="{% url 'frontend:about' %}" class="footer-link">About Us</a></li>
                         <li><a href="{% url 'frontend:contact' %}" class="footer-link">Contact</a></li>
                     </ul>

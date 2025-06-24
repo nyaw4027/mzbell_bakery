@@ -1,29 +1,23 @@
 from django.contrib import admin
 from django.urls import path, include
-from products import views as product_views
+from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', product_views.home, name='home'),
-
-    # Admin and auth
     path('admin/', admin.site.urls),
-    path('accounts/', include(('django.contrib.auth.urls', 'django.contrib.auth'), namespace='registration')),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
 
-    # API routes
-    path('api/products/', include(('products.api_urls', 'products_api'), namespace='products_api')),
-    path('api/orders/', include('orders.urls')),
-    path('api/payments/', include('payments.urls')),
-    path('api/delivery/', include('delivery.urls')),
-    path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
+    # App routes with namespace
+    path('accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
+    path('products/', include(('products.web_urls', 'frontend'), namespace='frontend')),
 
-    # Web views
-    path('products/', include(('products.web_urls', 'products'), namespace='products')),
+    path('api/products/', include(('products.api_urls', 'api_products'), namespace='api_products')),
+    path('orders/', include(('orders.urls', 'orders'), namespace='orders')),
     path('users/', include(('users.urls', 'users'), namespace='users')),
-
-    path('payments/', include('payments.urls')),
-    path('', include('frontend.urls')),
+    path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
+    path('', include(('frontend.urls', 'frontend'), namespace='frontend')),  # ✅ Include this
 ]
 
 if settings.DEBUG:

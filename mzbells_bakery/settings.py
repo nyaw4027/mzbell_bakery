@@ -8,14 +8,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- SECURITY SETTINGS ---
 SECRET_KEY = config('SECRET_KEY', default='your-secret-key')
-DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default='127.0.0.1,localhost')
+DEBUG = config('DEBUG', default=False, cast=bool)  # Changed to False for production
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default='127.0.0.1,localhost,*.herokuapp.com,*.railway.app,*.vercel.app,*.netlify.app,*.pythonanywhere.com')
 
 
 # --- GIS / GDAL CONFIGURATION ---
 USE_GIS = config('USE_GIS', default=False, cast=bool)  # Changed default to False
 
-if os.name == 'nt' and USE_GIS:
+# Only configure GIS for local development (not in production)
+if os.name == 'nt' and USE_GIS and DEBUG:
     # Extended GDAL paths for different versions
     gdal_paths = [
         'C:/OSGeo4W/bin/gdal304.dll',
@@ -81,10 +82,6 @@ if os.name == 'nt' and USE_GIS:
     else:
         USE_GIS = False
         print("⚠️ GIS support disabled — GDAL or GEOS not found on Windows.")
-        if not GDAL_LIBRARY_PATH:
-            print("   GDAL library not found in expected locations")
-        if not GEOS_LIBRARY_PATH:
-            print("   GEOS library not found in expected locations")
 
 
 # --- APPLICATIONS ---
@@ -115,7 +112,7 @@ INSTALLED_APPS = [
 ]
 
 # Only add GIS if it's properly configured
-if USE_GIS:
+if USE_GIS and DEBUG:  # Only enable GIS in development
     INSTALLED_APPS.insert(0, 'django.contrib.gis')
 
 
@@ -130,6 +127,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Add WhiteNoise middleware only if available (for production)
+try:
+    import whitenoise
+    MIDDLEWARE.insert(2, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    # Static files compression for production
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+except ImportError:
+    # WhiteNoise not installed - use default static files handling
+    pass
 
 
 # --- URLS AND WSGI ---
@@ -156,19 +163,39 @@ TEMPLATES = [
 
 
 # --- DATABASES ---
-# Use PostGIS if GIS is enabled, otherwise use standard database
-if USE_GIS:
+# Production database configuration
+if config('DATABASE_URL', default=None):
+    # Use DATABASE_URL for production (Heroku, Railway, etc.)
+    import dj_database_url
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': config('DB_NAME', default='mzbells_bakery'),
-            'USER': config('DB_USER', default='postgres'),
-            'PASSWORD': config('DB_PASSWORD', default='password'),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
-        }
+        'default': dj_database_url.parse(config('DATABASE_URL'))
     }
+elif not DEBUG and config('DB_NAME', default=None):
+    # Use PostGIS if GIS is enabled and we have DB config
+    if USE_GIS:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.contrib.gis.db.backends.postgis',
+                'NAME': config('DB_NAME'),
+                'USER': config('DB_USER'),
+                'PASSWORD': config('DB_PASSWORD'),
+                'HOST': config('DB_HOST', default='localhost'),
+                'PORT': config('DB_PORT', default='5432'),
+            }
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': config('DB_NAME'),
+                'USER': config('DB_USER'),
+                'PASSWORD': config('DB_PASSWORD'),
+                'HOST': config('DB_HOST', default='localhost'),
+                'PORT': config('DB_PORT', default='5432'),
+            }
+        }
 else:
+    # Development SQLite database
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -180,7 +207,7 @@ else:
 # --- AUTHENTICATION ---
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'users:dashboard'
-LOGOUT_REDIRECT_URL = 'users:login'
+LOGOUT_REDIRECT_URL = 'users:login'  
 LOGIN_URL = 'users:login'
 
 
@@ -232,7 +259,13 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://mzbellsbakery.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
+
+# Allow all origins in development
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
 
 
 # --- EMAIL CONFIGURATION ---
@@ -275,6 +308,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
     },
 }
 
@@ -296,6 +333,22 @@ GOOGLE_MAPS_API_KEY = config('GOOGLE_MAPS_API_KEY', default='')
 # --- CRISPY FORMS ---
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# --- SECURITY SETTINGS FOR PRODUCTION ---
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_REDIRECT_EXEMPT = []
+    SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    USE_TZ = True
+    
+    # Session security
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 # --- GIS SETTINGS (only if GIS is enabled) ---

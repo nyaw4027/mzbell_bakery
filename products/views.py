@@ -163,7 +163,7 @@ def menu(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'products/menu.html', {'page_obj': page_obj})
+    return render(request, 'frontend/menu.html', {'page_obj': page_obj})
 
 
 @require_POST
