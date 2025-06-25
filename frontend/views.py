@@ -482,6 +482,9 @@ def about(request):
 
 
 def contact(request):
+    """
+    Contact us page with form handling
+    """
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         email = request.POST.get('email', '').strip()
@@ -508,9 +511,12 @@ def contact(request):
                 fail_silently=False
             )
 
-            return redirect('frontend:contact_thank_you')
+            messages.success(request, 'Thank you for your message! We\'ll get back to you soon.')
+            return redirect('frontend:contact')
 
     return render(request, 'frontend/contact.html', {'page_title': 'Contact Us'})
+
+
 def menu(request):
     """
     Bakery menu page
@@ -532,7 +538,7 @@ def menu(request):
 
     return render(request, 'frontend/menu.html', context)
 
-import uuid
+
 def custom_order_form(request):
     """
     Custom order form page
@@ -630,6 +636,13 @@ def services(request):
     return render(request, 'frontend/services.html', context)
 
 
+def dashboard(request):
+    """
+    User dashboard page
+    """
+    return render(request, 'frontend/dashboard.html')
+
+
 # AJAX Views for dynamic functionality
 @csrf_exempt
 def get_cart_count(request):
@@ -665,13 +678,13 @@ def search_products(request):
     
     return JsonResponse({'products': products_data})
 
-def dashboard(request):
-    return render(request, 'frontend/dashboard.html')
 
-
-    
+# Payment processing views
 @csrf_exempt
 def process_checkout(request):
+    """
+    Process checkout form submission
+    """
     if request.method == 'POST':
         # Collect submitted form data
         full_name = request.POST.get('full_name')
@@ -682,15 +695,22 @@ def process_checkout(request):
 
         # Optionally: create Order object, send email, etc.
         # For now just redirect to success
-        return redirect('checkout_success')  # Create this view later
+        return redirect('checkout_success')
 
-    return redirect('checkout')  # Redirect back if not POST
+    return redirect('checkout')
+
 
 def checkout_success(request):
+    """
+    Checkout success page
+    """
     return render(request, 'frontend/checkout_success.html')
 
 
 def initiate_momo_payment(request):
+    """
+    Initiate mobile money payment via Flutterwave
+    """
     if request.method == 'POST':
         phone = request.POST.get('phone')
         amount = request.POST.get('amount')
@@ -730,14 +750,3 @@ def initiate_momo_payment(request):
             return JsonResponse({'error': 'Payment initiation failed'}, status=400)
 
     return redirect('checkout')
-
-def contact_view(request):
-        return render(request, 'frontend/contact.html')
-
-
-def about_view(request):
-    team_members = TeamMember.objects.all()
-    return render(request, 'about.html', {'team_members': team_members})
-
-
-
