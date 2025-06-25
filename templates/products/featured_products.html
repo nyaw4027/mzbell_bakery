@@ -81,7 +81,7 @@
         <button type="submit" class="bg-gradient-to-r from-pink-600 to-rose-600 text-white px-8 py-3 rounded-lg hover:from-pink-700 hover:to-rose-700 transition-all duration-300 font-semibold">
           Apply Filters
         </button>
-        <a href="{% url 'products:featured_products' %}" class="bg-gray-100 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-200 transition-all duration-300 font-semibold">
+        <a href="{% url 'frontend:featured_products' %}" class="bg-gray-100 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-200 transition-all duration-300 font-semibold">
           Clear All
         </a>
       </div>
@@ -164,7 +164,7 @@
 
           <!-- Action Buttons -->
           <div class="flex gap-3">
-            <a href="{% url 'products:product_detail' slug=product.slug %}" 
+            <a href="{% url 'frontend:product_detail' slug=product.slug %}" 
                class="flex-1 bg-gradient-to-r from-pink-600 to-rose-600 text-white text-center py-3 px-4 rounded-lg hover:from-pink-700 hover:to-rose-700 transition-all duration-300 font-semibold">
               View Details
             </a>
