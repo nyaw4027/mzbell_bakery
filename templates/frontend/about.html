@@ -1,582 +1,809 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}About Us - MzBell's Bakery{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+{% block styles %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 <style>
     :root {
-        --primary-pink: #be185d;
-        --light-pink: #fce7f3;
-        --dark-pink: #831843;
-        --accent-gold: #f59e0b;
-        --cream: #fefcf3;
+        --primary-color: #8B4513;
+        --secondary-color: #D2691E;
+        --accent-color: #F4A460;
+        --text-dark: #3C2414;
+        --background-light: #FDF5E6;
+        --gradient-primary: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+        --gradient-secondary: linear-gradient(135deg, #F4A460 0%, #D2691E 100%);
+        --shadow-light: 0 5px 15px rgba(139, 69, 19, 0.1);
+        --shadow-medium: 0 10px 30px rgba(139, 69, 19, 0.15);
+        --shadow-heavy: 0 20px 40px rgba(139, 69, 19, 0.2);
     }
-    
-    .font-playfair {
-        font-family: 'Playfair Display', serif;
+
+    body {
+        font-family: 'Georgia', serif;
+        line-height: 1.7;
+        color: var(--text-dark);
+        overflow-x: hidden;
     }
-    
-    .gradient-bg {
-        background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #fef3c7 100%);
-    }
-    
-    .gradient-text {
-        background: linear-gradient(135deg, var(--primary-pink), var(--accent-gold));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .glass-effect {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-    
-    .floating-animation {
-        animation: float 6s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
-    
-    .fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .stagger-1 { animation-delay: 0.1s; }
-    .stagger-2 { animation-delay: 0.2s; }
-    .stagger-3 { animation-delay: 0.3s; }
-    .stagger-4 { animation-delay: 0.4s; }
-    
-    .card-hover {
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    
-    .card-hover:hover {
-        transform: translateY(-15px) scale(1.02);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    
-    .sparkle::before {
-        content: '✨';
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        font-size: 1.5rem;
-        animation: sparkle 2s ease-in-out infinite;
-    }
-    
-    @keyframes sparkle {
-        0%, 100% { opacity: 0; transform: scale(0.8); }
-        50% { opacity: 1; transform: scale(1.2); }
-    }
-    
-    .section-divider {
-        background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
-        height: 2px;
-        margin: 1.5rem 0;
-        border-radius: 1px;
-    }
-    
-    .text-shadow {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, var(--primary-pink), var(--accent-gold));
-        transition: all 0.3s ease;
+
+    /* Hero Section */
+    .hero-section {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 120px 0 80px;
         position: relative;
         overflow: hidden;
     }
-    
-    .btn-primary::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.6s;
-    }
-    
-    .btn-primary:hover::before {
-        left: 100%;
-    }
-    
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(190, 24, 93, 0.4);
-    }
-    
-    .image-overlay {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .image-overlay::after {
+
+    .hero-section::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(45deg, rgba(190, 24, 93, 0.1), rgba(245, 158, 11, 0.1));
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.06)"/></svg>');
+        background-size: 150px 150px;
+        animation: float 25s infinite linear;
     }
-    
-    .image-overlay:hover::after {
-        opacity: 1;
+
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        100% { transform: translateY(-150px) rotate(360deg); }
     }
-    
-    .decorative-border {
-        border: 3px solid;
-        border-image: linear-gradient(45deg, var(--primary-pink), var(--accent-gold)) 1;
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
     }
-    
-    .pulse-glow {
-        animation: pulseGlow 3s ease-in-out infinite;
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    
-    @keyframes pulseGlow {
-        0%, 100% { box-shadow: 0 0 20px rgba(190, 24, 93, 0.3); }
-        50% { box-shadow: 0 0 40px rgba(190, 24, 93, 0.6); }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
     }
-    
-    .service-card {
+
+    /* Stats Section */
+    .stats-section {
         background: white;
-        padding: 1.5rem;
-        border-radius: 1rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        border-left: 4px solid var(--primary-pink);
+        padding: 60px 0;
+        border-bottom: 1px solid #f0f0f0;
     }
-    
-    .service-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s ease;
     }
-    
-    .service-icon {
-        width: 3rem;
-        height: 3rem;
-        background: linear-gradient(135deg, var(--primary-pink), var(--accent-gold));
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .stats-counter {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        color: #666;
+        font-weight: 500;
+    }
+
+    /* Story Section */
+    .story-section {
+        background: var(--background-light);
+        padding: 100px 0;
+    }
+
+    .section-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .section-subtitle {
+        font-size: 1.3rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 4rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Timeline */
+    .timeline {
+        position: relative;
+        padding: 40px 0;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--gradient-primary);
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    .timeline-item {
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-right: 55%;
+        text-align: right;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content {
+        margin-left: 55%;
+        text-align: left;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: 50%;
+        top: 30px;
+        width: 24px;
+        height: 24px;
+        background: var(--secondary-color);
+        border: 5px solid white;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 0 0 4px var(--secondary-color), var(--shadow-light);
+        z-index: 2;
+    }
+
+    .timeline-content {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .timeline-content:hover {
+        box-shadow: var(--shadow-heavy);
+        transform: translateY(-5px);
+    }
+
+    .timeline-content::before {
+        content: '';
+        position: absolute;
+        top: 30px;
+        width: 0;
+        height: 0;
+        border: 15px solid transparent;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content::before {
+        right: -30px;
+        border-left-color: white;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content::before {
+        left: -30px;
+        border-right-color: white;
+    }
+
+    .timeline-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    /* Values Section */
+    .values-section {
+        padding: 100px 0;
+        background: white;
+    }
+
+    .value-card {
+        background: white;
+        border: none;
+        border-radius: 25px;
+        box-shadow: var(--shadow-light);
+        padding: 50px 30px;
+        text-align: center;
+        height: 100%;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .value-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: var(--gradient-primary);
+        transform: translateY(-5px);
+        transition: transform 0.4s ease;
+    }
+
+    .value-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-heavy);
+    }
+
+    .value-card:hover::before {
+        transform: translateY(0);
+    }
+
+    .value-icon {
+        width: 100px;
+        height: 100px;
+        background: var(--gradient-secondary);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 1rem;
         color: white;
-        font-size: 1.25rem;
+        font-size: 2.5rem;
+        margin: 0 auto 30px;
+        box-shadow: var(--shadow-light);
+        transition: transform 0.3s ease;
     }
-    
+
+    .value-card:hover .value-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .value-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 20px;
+    }
+
+    /* Team Section */
+    .team-section {
+        background: var(--background-light);
+        padding: 100px 0;
+    }
+
     .team-card {
         background: white;
-        padding: 2rem;
-        border-radius: 1.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border: none;
+        border-radius: 25px;
+        box-shadow: var(--shadow-light);
+        padding: 40px 30px;
         text-align: center;
+        height: 100%;
+        transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    
+
     .team-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--primary-pink), var(--accent-gold));
+        bottom: 0;
+        background: var(--gradient-primary);
+        opacity: 0;
+        transition: opacity 0.4s ease;
     }
-    
+
     .team-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-heavy);
+        color: white;
     }
-    
-    .team-photo {
-        width: 8rem;
-        height: 8rem;
+
+    .team-card:hover::before {
+        opacity: 0.95;
+    }
+
+    .team-card:hover .team-avatar {
+        border-color: white;
+        box-shadow: 0 0 0 5px rgba(255,255,255,0.3);
+    }
+
+    .team-avatar {
+        width: 140px;
+        height: 140px;
         border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid #fce7f3;
-        margin: 0 auto 1rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        display: block;
-    }
-    
-    .team-card:hover .team-photo {
-        transform: scale(1.1);
-        box-shadow: 0 10px 15px -3px rgba(190, 24, 93, 0.3);
-    }
-    
-    .team-photo-placeholder {
-        width: 8rem;
-        height: 8rem;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--primary-pink), var(--accent-gold));
+        margin: 0 auto 25px;
+        background: var(--gradient-secondary);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1rem;
+        font-size: 3rem;
         color: white;
-        font-size: 2.5rem;
-        border: 4px solid #fce7f3;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+        font-weight: 700;
+        position: relative;
+        z-index: 2;
+        border: 5px solid white;
+        box-shadow: var(--shadow-medium);
+        transition: all 0.4s ease;
     }
-    
-    .team-card:hover .team-photo-placeholder {
-        transform: scale(1.1);
-        box-shadow: 0 10px 15px -3px rgba(190, 24, 93, 0.3);
-    }
-    
-    .social-links a {
-        color: var(--primary-pink);
-        font-size: 1.25rem;
-        transition: all 0.3s ease;
-    }
-    
-    .social-links a:hover {
-        color: var(--accent-gold);
-        transform: translateY(-2px) scale(1.1);
-    }
-    
-    .decorative-dots {
-        position: absolute;
+
+    .team-avatar img {
         width: 100%;
         height: 100%;
-        pointer-events: none;
-        opacity: 0.1;
-    }
-    
-    .decorative-dots::before,
-    .decorative-dots::after {
-        content: '';
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background: var(--primary-pink);
+        object-fit: cover;
         border-radius: 50%;
     }
-    
-    .decorative-dots::before {
-        top: 2rem;
-        left: 2rem;
-        animation: float 4s ease-in-out infinite;
-    }
-    
-    .decorative-dots::after {
-        bottom: 2rem;
-        right: 2rem;
-        animation: float 4s ease-in-out infinite reverse;
-    }
-    
-    .story-card {
-        background: linear-gradient(135deg, rgba(252, 231, 243, 0.8), rgba(243, 232, 255, 0.8));
-        padding: 3rem;
-        border-radius: 2rem;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .story-card::before {
-        content: '🧁';
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        font-size: 2rem;
-        animation: float 3s ease-in-out infinite;
-    }
-    
-    .promise-card {
-        background: linear-gradient(135deg, rgba(252, 231, 243, 0.6), rgba(254, 243, 199, 0.6));
-        padding: 3rem;
-        border-radius: 2rem;
-        box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .promise-emojis {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        margin-top: 2rem;
-        font-size: 2.5rem;
-    }
-    
-    .promise-emojis span {
-        animation: float 4s ease-in-out infinite;
-    }
-    
-    .promise-emojis span:nth-child(2) { animation-delay: 1s; }
-    .promise-emojis span:nth-child(3) { animation-delay: 2s; }
-    .promise-emojis span:nth-child(4) { animation-delay: 3s; }
 
-    /* No team members message */
-    .no-team-members {
-        text-align: center;
-        padding: 4rem 2rem;
+    .team-name {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .team-position {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        opacity: 0.8;
+        position: relative;
+        z-index: 2;
+    }
+
+    .team-bio {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* CTA Section */
+    .cta-section {
         background: white;
-        border-radius: 1.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        padding: 100px 0;
     }
 
-    .no-team-members i {
-        font-size: 4rem;
-        color: var(--primary-pink);
-        margin-bottom: 1rem;
+    .btn-custom {
+        background: var(--gradient-primary);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: var(--shadow-light);
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-heavy);
+        color: white;
+    }
+
+    .btn-outline-custom {
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+        background: transparent;
+        padding: 13px 38px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-outline-custom:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-medium);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+        }
+        
+        .timeline::before {
+            left: 30px;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content,
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 80px;
+            margin-right: 0;
+            text-align: left;
+        }
+        
+        .timeline-marker {
+            left: 30px;
+        }
+        
+        .timeline-content::before {
+            display: none;
+        }
+        
+        .stats-counter {
+            font-size: 2.5rem;
+        }
+    }
+
+    /* Loading animations */
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+
+    .fade-in-up.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .scale-in {
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.6s ease;
+    }
+
+    .scale-in.animate {
+        opacity: 1;
+        transform: scale(1);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Header -->
-<section class="gradient-bg py-20 relative overflow-hidden">
-    <div class="decorative-dots"></div>
-    <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
-        <h1 class="text-5xl md:text-6xl font-playfair font-bold gradient-text mb-6 fade-in-up text-shadow">
-            About MzBell's Bakery
-        </h1>
-        <div class="section-divider max-w-xs mx-auto fade-in-up stagger-1"></div>
-        <p class="mt-6 text-xl text-gray-700 max-w-2xl mx-auto fade-in-up stagger-2 font-medium">
-            Crafting sweet moments, one delicious bite at a time 🧁
-        </p>
-    </div>
-</section>
-
-<!-- Our Story -->
-<section class="bg-white py-20 relative">
-    <div class="max-w-5xl mx-auto px-6">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-playfair font-semibold text-pink-800 mb-4 sparkle relative">Our Story</h2>
-            <div class="section-divider max-w-md mx-auto"></div>
-        </div>
-        <div class="story-card">
-            <p class="text-gray-700 leading-relaxed text-lg text-center max-w-4xl mx-auto">
-                MzBell's Bakery was born out of a deep love for baking and sharing joy through delicious treats.
-                What started as a small home kitchen in Accra has now grown into a beloved bakery known for custom cakes, fresh pastries,
-                and warm smiles. We believe in using only the finest ingredients to bring your sweetest dreams to life.
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- What We Offer -->
-<section class="gradient-bg py-20">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <div class="order-2 lg:order-1">
-                <h2 class="text-4xl font-playfair font-semibold text-pink-800 mb-8">What We Offer</h2>
-                <div class="space-y-6">
-                    <div class="service-card">
-                        <div class="flex items-center">
-                            <div class="service-icon">
-                                <i class="fas fa-birthday-cake"></i>
-                            </div>
-                            <span class="text-gray-700 font-medium text-lg">Custom celebration and wedding cakes</span>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="flex items-center">
-                            <div class="service-icon">
-                                <i class="fas fa-bread-slice"></i>
-                            </div>
-                            <span class="text-gray-700 font-medium text-lg">Freshly baked pastries and bread</span>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="flex items-center">
-                            <div class="service-icon">
-                                <i class="fas fa-leaf"></i>
-                            </div>
-                            <span class="text-gray-700 font-medium text-lg">Gluten-free and vegan options</span>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="flex items-center">
-                            <div class="service-icon">
-                                <i class="fas fa-truck"></i>
-                            </div>
-                            <span class="text-gray-700 font-medium text-lg">Nationwide delivery (coming soon!)</span>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <div class="flex items-center">
-                            <div class="service-icon">
-                                <i class="fas fa-handshake"></i>
-                            </div>
-                            <span class="text-gray-700 font-medium text-lg">Corporate and event orders</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="order-1 lg:order-2">
-                <div class="relative">
-                    <div class="absolute -inset-4 gradient-bg rounded-3xl pulse-glow"></div>
-                    <img src="{% static 'images/about-bakery.jpg' %}" alt="Our Bakery"
-                        class="relative rounded-3xl shadow-2xl w-full h-96 object-cover image-overlay decorative-border" />
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Our Promise -->
-<section class="bg-white py-20">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-        <h2 class="text-4xl font-playfair font-semibold text-pink-800 mb-8">Our Promise</h2>
-        <div class="section-divider max-w-md mx-auto mb-8"></div>
-        <div class="promise-card">
-            <p class="text-gray-700 leading-relaxed text-xl max-w-3xl mx-auto font-medium">
-                Every pastry, every cake, and every smile we deliver is a testament to our passion for baking.
-                We're committed to exceptional taste, personalized service, and making your celebrations truly memorable.
-            </p>
-            <div class="promise-emojis">
-                <span>🎂</span>
-                <span>🥐</span>
-                <span>🍰</span>
-                <span>🧁</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Team Members -->
-<section class="gradient-bg py-20">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-16">
-            <h2 class="text-5xl font-playfair font-bold text-pink-800 mb-6">Meet Our Team</h2>
-            <div class="section-divider max-w-lg mx-auto"></div>
-            <p class="text-gray-600 text-lg mt-4">The passionate hearts behind every delicious creation</p>
-        </div>
-        
-        {% if team and team|length > 0 %}
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-                {% for member in team %}
-                <div class="team-card">
-                    {% if member.photo and member.photo.url %}
-                        <img src="{{ member.photo.url }}" alt="{{ member.name }}"
-                             class="team-photo"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                        <div class="team-photo-placeholder" style="display: none;">
-                            <i class="fas fa-user"></i>
-                        </div>
-                    {% else %}
-                        <div class="team-photo-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
-                    {% endif %}
-                    
-                    <h3 class="text-2xl font-playfair font-bold text-pink-800 mb-2">
-                        {{ member.name|default:"Team Member" }}
-                    </h3>
-                    
-                    <p class="text-pink-600 font-semibold mb-3">
-                        {{ member.role|default:"Baker" }}
-                    </p>
-                    
-                    {% if member.bio %}
-                        <p class="text-gray-600 text-sm leading-relaxed mb-6">{{ member.bio }}</p>
-                    {% endif %}
-                    
-                    <div class="social-links flex justify-center space-x-4">
-                        {% if member.facebook %}
-                            <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
-                                <i class="fab fa-facebook"></i>
-                            </a>
-                        {% endif %}
-                        {% if member.twitter %}
-                            <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        {% endif %}
-                        {% if member.instagram %}
-                            <a href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        {% endif %}
-                        {% if member.linkedin %}
-                            <a href="{{ member.linkedin }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="no-team-members">
-                <i class="fas fa-users"></i>
-                <h3 class="text-2xl font-playfair font-bold text-pink-800 mb-4">Our Amazing Team</h3>
-                <p class="text-gray-600 text-lg">
-                    We're currently updating our team profiles. Check back soon to meet the wonderful people behind MzBell's Bakery!
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center hero-content">
+            <div class="col-lg-10 mx-auto text-center">
+                <h1 class="hero-title" data-aos="fade-up" data-aos-duration="1000">About MzBell's Bakery</h1>
+                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                    Crafting sweet memories since our beginning, one delicious treat at a time
                 </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                    <a href="#story" class="btn btn-light btn-lg px-4 py-3">
+                        <i class="fas fa-book-open me-2"></i>Our Story
+                    </a>
+                    <a href="#team" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-users me-2"></i>Meet the Team
+                    </a>
+                </div>
             </div>
-        {% endif %}
+        </div>
     </div>
 </section>
 
-<!-- Contact CTA -->
-<section class="bg-white py-20 relative overflow-hidden">
-    <div class="decorative-dots"></div>
-    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-        <h2 class="text-4xl font-playfair font-semibold text-pink-900 mb-6">Visit or Contact Us</h2>
-        <div class="section-divider max-w-md mx-auto mb-8"></div>
-        <p class="text-gray-700 mb-10 text-xl">Want to place an order or learn more about what we do?</p>
-        <a href="{% url 'frontend:contact' %}" class="inline-flex items-center btn-primary text-white px-10 py-4 rounded-full shadow-lg font-semibold text-lg transition-all duration-300">
-            <i class="fas fa-phone-alt mr-3"></i>
-            Get in Touch
-        </a>
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
+                    <span class="stats-counter" data-target="500">0</span>
+                    <p class="stat-label">Happy Customers</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
+                    <span class="stats-counter" data-target="50">0</span>
+                    <p class="stat-label">Cake Varieties</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
+                    <span class="stats-counter" data-target="5">0</span>
+                    <p class="stat-label">Years Experience</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
+                    <span class="stats-counter" data-target="1000">0</span>
+                    <p class="stat-label">Cakes Baked</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<!-- Debug Information (Remove in production) -->
-{% if debug %}
-<section class="bg-gray-100 py-10">
-    <div class="max-w-4xl mx-auto px-6">
-        <h3 class="text-xl font-bold mb-4">Debug Information:</h3>
-        <div class="bg-white p-4 rounded-lg shadow">
-            <p><strong>Team members count:</strong> {{ team|length|default:"0" }}</p>
-            <p><strong>MEDIA_URL:</strong> {{ MEDIA_URL|default:"Not set" }}</p>
-            <p><strong>MEDIA_ROOT:</strong> {{ MEDIA_ROOT|default:"Not set" }}</p>
-            {% if team %}
-                <h4 class="font-bold mt-4 mb-2">Team Members:</h4>
-                {% for member in team %}
-                    <div class="mb-2 p-2 bg-gray-50 rounded">
-                        <p><strong>Name:</strong> {{ member.name }}</p>
-                        <p><strong>Photo:</strong> {{ member.photo|default:"No photo" }}</p>
-                        {% if member.photo %}
-                            <p><strong>Photo URL:</strong> {{ member.photo.url }}</p>
-                            <p><strong>Photo Path:</strong> {{ member.photo.path }}</p>
+<!-- Story Section -->
+<section id="story" class="story-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="section-title" data-aos="fade-up">Our Sweet Story</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                    Every great bakery has a story, and ours begins with passion, tradition, and a love for creating moments of joy.
+                </p>
+                
+                <div class="timeline">
+                    <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">The Beginning</h4>
+                            <p>What started as a small home kitchen experiment turned into a passion for creating beautiful, delicious cakes that bring families together for life's most special moments. Our founder, MzBell, discovered her love for baking while creating her daughter's first birthday cake.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-aos="fade-left" data-aos-delay="300">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Growing Dreams</h4>
+                            <p>As word spread about our exceptional cakes and personalized service, we expanded our offerings and opened our doors to serve the community we love. From birthday parties to weddings, we became part of countless celebrations.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-aos="fade-right" data-aos-delay="400">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Innovation & Tradition</h4>
+                            <p>We invested in the finest equipment and continued learning new techniques while staying true to traditional baking methods. Our commitment to quality ingredients and artistic presentation set us apart in the industry.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-aos="fade-left" data-aos-delay="500">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Today & Tomorrow</h4>
+                            <p>Today, MzBell's Bakery continues to innovate while staying true to our core values of quality, creativity, and customer satisfaction. Every cake tells a story, and we're honored to be part of yours as we look forward to many more sweet years ahead.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Our Values</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            The principles that guide everything we do
+        </p>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4 class="value-title">Quality First</h4>
+                    <p>We use only the finest ingredients and time-tested techniques to ensure every bite is perfect. From premium Belgian chocolate to farm-fresh eggs, quality is never compromised.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4 class="value-title">Creative Excellence</h4>
+                    <p>Every cake is a work of art, designed to reflect your unique vision and celebration. Our team of skilled decorators brings imagination to life with precision and creativity.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4 class="value-title">Customer Care</h4>
+                    <p>Your satisfaction is our priority. We're here to make your special moments even more memorable with personalized service and attention to every detail of your order.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section id="team" class="team-section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Meet Our Team</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            The talented individuals who make the magic happen
+        </p>
+        
+        <div class="row g-4">
+            {% if team_members %}
+                {% for member in team_members %}
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1|mul:100 }}">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            {% if member.image %}
+                                <img src="{{ member.image.url }}" alt="{{ member.name }}">
+                            {% else %}
+                                {{ member.name|first|upper }}
+                            {% endif %}
+                        </div>
+                        <h4 class="team-name">{{ member.name }}</h4>
+                        <p class="team-position">{{ member.position|default:"Team Member" }}</p>
+                        {% if member.bio %}
+                            <p class="team-bio">{{ member.bio|truncatewords:25 }}</p>
                         {% endif %}
                     </div>
+                </div>
                 {% endfor %}
+            {% else %}
+                <!-- Default team members -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-card">
+                        <div class="team-avatar">M</div>
+                        <h4 class="team-name">MzBell</h4>
+                        <p class="team-position">Founder & Head Baker</p>
+                        <p class="team-bio">The creative mind behind our delicious creations, bringing years of passion and expertise to every cake. MzBell's vision of combining artistry with exceptional taste drives everything we do.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="team-card">
+                        <div class="team-avatar">S</div>
+                        <h4 class="team-name">Sarah</h4>
+                        <p class="team-position">Lead Cake Decorator</p>
+                        <p class="team-bio">Our artistic genius who transforms every cake into a masterpiece with attention to detail and creative flair. Sarah's background in fine arts brings a unique aesthetic to our designs.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="team-card">
+                        <div class="team-avatar">J</div>
+                        <h4 class="team-name">James</h4>
+                        <p class="team-position">Customer Experience Manager</p>
+                        <p class="team-bio">Ensuring every customer feels valued and their special requirements are perfectly understood and fulfilled. James coordinates orders and maintains our high standards of service.</p>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>
 </section>
-{% endif %}
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title" data-aos="fade-up">Ready to Create Something Sweet?</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                    Let us help you celebrate life's special moments with our custom cakes and delicious treats. From intimate gatherings to grand celebrations, we're here to make it memorable.
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap" data-aos="fade-up" data-aos-delay="200">
+                    <a href="{% url 'frontend:product_list' %}" class="btn-custom">
+                        <i class="fas fa-birthday-cake me-2"></i>View Our Products
+                    </a>
+                    <a href="{% url 'frontend:contact' %}" class="btn-outline-custom">
+                        <i class="fas fa-envelope me-2"></i>Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Counter animation
+    function animateCounters() {
+        const counters = document.querySelectorAll('.stats-counter');
+        
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            let current = 0;
+            const increment = target / 60; // Animation duration control
+            
+            const updateCounter = () => {
+                if (current < target) {
+                    current += increment;
+                    counter.textContent = Math.floor(current) + (target >= 1000 ? '+' : '+');
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target + '+';
+                }
+            };
+            
+            updateCounter();
+        });
+    }
+
+    // Intersection Observer for counter animation
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+
+    // Add loading animation classes
+    window.addEventListener('load', function() {
+        const elements = document.querySelectorAll('.fade-in-up, .scale-in');
+        elements.forEach(element => {
+            element.classList.add('animate');
+        });
+    });
+
+    // Parallax effect for hero section
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector('.hero-section::before');
+        if (parallax) {
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        }
+    });
+</script>
 {% endblock %}
