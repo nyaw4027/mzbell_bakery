@@ -163,14 +163,22 @@ TEMPLATES = [
 
 
 # --- DATABASES ---
-# Production database configuration
-if config('DATABASE_URL', default=None):
-    # Use DATABASE_URL for production (Heroku, Railway, etc.)
+# Always use SQLite3 as the primary database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# Optional: Override with PostgreSQL only if explicitly configured for production
+if config('USE_POSTGRESQL', default=False, cast=bool) and config('DATABASE_URL', default=None):
+    # Import dj_database_url only when needed
     import dj_database_url
     DATABASES = {
         'default': dj_database_url.parse(config('DATABASE_URL'))
     }
-elif not DEBUG and config('DB_NAME', default=None):
+elif config('USE_POSTGRESQL', default=False, cast=bool) and config('DB_NAME', default=None):
     # Use PostGIS if GIS is enabled and we have DB config
     if USE_GIS:
         DATABASES = {
@@ -194,14 +202,6 @@ elif not DEBUG and config('DB_NAME', default=None):
                 'PORT': config('DB_PORT', default='5432'),
             }
         }
-else:
-    # Development SQLite database
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
 
 
 # --- AUTHENTICATION ---
