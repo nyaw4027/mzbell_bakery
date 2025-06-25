@@ -733,3 +733,11 @@ def initiate_momo_payment(request):
 
 def contact_view(request):
         return render(request, 'frontend/contact.html')
+
+
+def about_view(request):
+    team_members = TeamMember.objects.all()
+    return render(request, 'about.html', {'team_members': team_members})
+
+
+
