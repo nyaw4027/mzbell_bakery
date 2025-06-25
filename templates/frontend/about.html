@@ -221,9 +221,31 @@
         margin: 0 auto 1rem;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        display: block;
     }
     
     .team-card:hover .team-photo {
+        transform: scale(1.1);
+        box-shadow: 0 10px 15px -3px rgba(190, 24, 93, 0.3);
+    }
+    
+    .team-photo-placeholder {
+        width: 8rem;
+        height: 8rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-pink), var(--accent-gold));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: white;
+        font-size: 2.5rem;
+        border: 4px solid #fce7f3;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .team-card:hover .team-photo-placeholder {
         transform: scale(1.1);
         box-shadow: 0 10px 15px -3px rgba(190, 24, 93, 0.3);
     }
@@ -312,6 +334,21 @@
     .promise-emojis span:nth-child(2) { animation-delay: 1s; }
     .promise-emojis span:nth-child(3) { animation-delay: 2s; }
     .promise-emojis span:nth-child(4) { animation-delay: 3s; }
+
+    /* No team members message */
+    .no-team-members {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .no-team-members i {
+        font-size: 4rem;
+        color: var(--primary-pink);
+        margin-bottom: 1rem;
+    }
 </style>
 {% endblock %}
 
@@ -435,43 +472,70 @@
             <div class="section-divider max-w-lg mx-auto"></div>
             <p class="text-gray-600 text-lg mt-4">The passionate hearts behind every delicious creation</p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-            {% for member in team %}
-            <div class="team-card">
-                {% if member.photo %}
-                <img src="{{ member.photo.url }}" alt="{{ member.name }}"
-                     class="team-photo" />
-                {% endif %}
-                <h3 class="text-2xl font-playfair font-bold text-pink-800 mb-2">{{ member.name }}</h3>
-                <p class="text-pink-600 font-semibold mb-3">{{ member.role }}</p>
-                {% if member.bio %}
-                <p class="text-gray-600 text-sm leading-relaxed mb-6">{{ member.bio }}</p>
-                {% endif %}
-                <div class="social-links flex justify-center space-x-4">
-                    {% if member.facebook %}
-                        <a href="{{ member.facebook }}" target="_blank" class="hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-facebook"></i>
-                        </a>
+        
+        {% if team and team|length > 0 %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+                {% for member in team %}
+                <div class="team-card">
+                    {% if member.photo and member.photo.url %}
+                        <img src="{{ member.photo.url }}" alt="{{ member.name }}"
+                             class="team-photo"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="team-photo-placeholder" style="display: none;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    {% else %}
+                        <div class="team-photo-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
                     {% endif %}
-                    {% if member.twitter %}
-                        <a href="{{ member.twitter }}" target="_blank" class="hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-twitter"></i>
-                        </a>
+                    
+                    <h3 class="text-2xl font-playfair font-bold text-pink-800 mb-2">
+                        {{ member.name|default:"Team Member" }}
+                    </h3>
+                    
+                    <p class="text-pink-600 font-semibold mb-3">
+                        {{ member.role|default:"Baker" }}
+                    </p>
+                    
+                    {% if member.bio %}
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">{{ member.bio }}</p>
                     {% endif %}
-                    {% if member.instagram %}
-                        <a href="{{ member.instagram }}" target="_blank" class="hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    {% endif %}
-                    {% if member.linkedin %}
-                        <a href="{{ member.linkedin }}" target="_blank" class="hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                    {% endif %}
+                    
+                    <div class="social-links flex justify-center space-x-4">
+                        {% if member.facebook %}
+                            <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                        {% endif %}
+                        {% if member.twitter %}
+                            <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        {% endif %}
+                        {% if member.instagram %}
+                            <a href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        {% endif %}
+                        {% if member.linkedin %}
+                            <a href="{{ member.linkedin }}" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
+        {% else %}
+            <div class="no-team-members">
+                <i class="fas fa-users"></i>
+                <h3 class="text-2xl font-playfair font-bold text-pink-800 mb-4">Our Amazing Team</h3>
+                <p class="text-gray-600 text-lg">
+                    We're currently updating our team profiles. Check back soon to meet the wonderful people behind MzBell's Bakery!
+                </p>
+            </div>
+        {% endif %}
     </div>
 </section>
 
@@ -488,4 +552,31 @@
         </a>
     </div>
 </section>
+
+<!-- Debug Information (Remove in production) -->
+{% if debug %}
+<section class="bg-gray-100 py-10">
+    <div class="max-w-4xl mx-auto px-6">
+        <h3 class="text-xl font-bold mb-4">Debug Information:</h3>
+        <div class="bg-white p-4 rounded-lg shadow">
+            <p><strong>Team members count:</strong> {{ team|length|default:"0" }}</p>
+            <p><strong>MEDIA_URL:</strong> {{ MEDIA_URL|default:"Not set" }}</p>
+            <p><strong>MEDIA_ROOT:</strong> {{ MEDIA_ROOT|default:"Not set" }}</p>
+            {% if team %}
+                <h4 class="font-bold mt-4 mb-2">Team Members:</h4>
+                {% for member in team %}
+                    <div class="mb-2 p-2 bg-gray-50 rounded">
+                        <p><strong>Name:</strong> {{ member.name }}</p>
+                        <p><strong>Photo:</strong> {{ member.photo|default:"No photo" }}</p>
+                        {% if member.photo %}
+                            <p><strong>Photo URL:</strong> {{ member.photo.url }}</p>
+                            <p><strong>Photo Path:</strong> {{ member.photo.path }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
 {% endblock %}
