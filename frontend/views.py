@@ -506,7 +506,7 @@ def about(request):
 
     context['testimonials'] = testimonials
 
-    return render(request, 'about.html', context)
+    return render(request, 'frontend/about.html', context)
 
 def contact(request):
     """
