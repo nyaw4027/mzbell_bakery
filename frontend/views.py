@@ -7,13 +7,14 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from products.models import Product, Category
-from .models import ContactMessage, TeamMember
+from .models import ContactMessage, TeamMember, GalleryImage
 import json
 import uuid
 from datetime import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 import requests
+from django.views.generic import TemplateView
 
 def home(request):
     """
@@ -776,3 +777,38 @@ def initiate_momo_payment(request):
             return JsonResponse({'error': 'Payment initiation failed'}, status=400)
 
     return redirect('checkout')
+
+class GalleryView(TemplateView):
+    template_name = 'gallery.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Get all products that have images
+        products_with_images = Product.objects.filter(
+            Q(image__isnull=False) | Q(image_url__isnull=False)
+        ).exclude(
+            Q(image='') & Q(image_url='')
+        )
+        
+        context['gallery_items'] = products_with_images
+        context['total_items'] = products_with_images.count()
+        
+        return context
+
+# Alternative function-based view (choose one)
+def gallery_view(request):
+    """Gallery view showing all product images"""
+    products_with_images = Product.objects.filter(
+        Q(image__isnull=False) | Q(image_url__isnull=False)
+    ).exclude(
+        Q(image='') & Q(image_url='')
+    )
+    
+    context = {
+        'gallery_items': products_with_images,
+        'total_items': products_with_images.count(),
+    }
+    
+    return render(request, 'frontend/gallery.html', context)
+

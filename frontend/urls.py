@@ -13,6 +13,8 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),  # Changed from contact_view to contact
     path('services/', views.services, name='services'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('gallery/', views.gallery_view, name='gallery'),
+    path('gallery/', views.GalleryView.as_view(), name='gallery'),
     
     # Shopping cart
     path('cart/', views.cart, name='cart'),

@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gallery - MzBell's Bakery{% endblock %}
+
+{% block styles %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+<style>
+.gallery-section {
+    background: linear-gradient(135deg, #fff0f5 0%, #f8f9fa 100%);
+    padding: 80px 0;
+    min-height: 100vh;
+}
+
+.gallery-title {
+    color: #d63384;
+    font-weight: 700;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.gallery-subtitle {
+    color: #6c757d;
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+}
+
+.gallery-filters {
+    margin-bottom: 2rem;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 2px solid #d63384;
+    color: #d63384;
+    padding: 8px 20px;
+    border-radius: 25px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: #d63384;
+    color: white;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.gallery-item {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.gallery-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+}
+
+.gallery-content {
+    padding: 1.5rem;
+}
+
+.gallery-item-title {
+    color: #d63384;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.gallery-item-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.gallery-item-category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(214, 51, 132, 0.9);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.no-images {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.no-images i {
+    font-size: 4rem;
+    color: #d63384;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .gallery-title {
+        font-size: 2rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    
+    .gallery-filters {
+        text-align: center;
+    }
+    
+    .filter-btn {
+        margin: 5px;
+        font-size: 0.9rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="gallery-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="gallery-title" data-aos="fade-up">MzBell's Moments</h1>
+            <p class="gallery-subtitle" data-aos="fade-up" data-aos-delay="100">
+                A delicious journey through our sweet creations and memorable events
+            </p>
+        </div>
+
+        <!-- Category Filters -->
+        {% if categories %}
+        <div class="gallery-filters text-center" data-aos="fade-up" data-aos-delay="200">
+            <button class="filter-btn active" data-filter="*">All</button>
+            {% for category in categories %}
+            <button class="filter-btn" data-filter=".{{ category.slug }}">{{ category.name }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="gallery-grid">
+            {% if images %}
+                {% for image in images %}
+                <div class="gallery-item {% if image.category %}{{ image.category.slug }}{% endif %}" 
+                     data-aos="zoom-in" 
+                     data-aos-delay="{{ forloop.counter0|add:100 }}">
+                    
+                    {% if image.category %}
+                    <div class="gallery-item-category">{{ image.category.name }}</div>
+                    {% endif %}
+                    
+                    <a href="{{ image.image.url }}" 
+                       data-lightbox="gallery" 
+                       data-title="{{ image.title }}{% if image.description %} - {{ image.description }}{% endif %}">
+                        <img src="{{ image.image.url }}" 
+                             alt="{{ image.title }}" 
+                             class="gallery-image">
+                    </a>
+                    
+                    <div class="gallery-content">
+                        <h5 class="gallery-item-title">{{ image.title }}</h5>
+                        {% if image.description %}
+                        <p class="gallery-item-description">{{ image.description|truncatewords:15 }}</p>
+                        {% endif %}
+                        {% if image.created_at %}
+                        <small class="text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ image.created_at|date:"M d, Y" }}
+                        </small>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="no-images" data-aos="fade-up">
+                        <i class="fas fa-images"></i>
+                        <h3>Coming Soon!</h3>
+                        <p>We're preparing some amazing photos to share with you. Check back soon!</p>
+                        <a href="{% url 'frontend:product_list' %}" class="btn btn-primary mt-3">
+                            View Our Products
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script>
+// Initialize AOS
+AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+});
+
+// Gallery filtering functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const filterValue = this.getAttribute('data-filter');
+            
+            galleryItems.forEach(item => {
+                if (filterValue === '*' || item.classList.contains(filterValue.slice(1))) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeIn 0.5s ease-in-out';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+
+// Lightbox configuration
+lightbox.option({
+    'resizeDuration': 200,
+    'wrapAround': true,
+    'albumLabel': 'Image %1 of %2'
+});
+</script>
+{% endblock %}

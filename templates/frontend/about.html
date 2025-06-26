@@ -1,185 +1,1561 @@
 {% extends "base.html" %}
-{% load static %}
 {% load custom_filters %}
 
 {% block title %}About Us - MzBell's Bakery{% endblock %}
 
-{% block styles %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-<link href="{% static 'css/about.css' %}" rel="stylesheet">
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #d6336c;
+        --secondary: #ffe4e1;
+        --accent: #fff0f5;
+        --text-dark: #4b1e2f;
+        --text-muted: #6b2737a5;
+        --shadow: rgba(0, 0, 0, 0.08);
+        --radius: 20px;
+        --font-main: 'Poppins', sans-serif;
+        --gradient-primary: linear-gradient(135deg, #d6336c 0%, #b8285a 100%);
+        --gradient-secondary: linear-gradient(135deg, #ffe4e1 0%, #ffcdc7 100%);
+        --gradient-accent: linear-gradient(135deg, #fff0f5 0%, #fce4ec 100%);
+        --glass-bg: rgba(255, 255, 255, 0.95);
+        --glass-border: rgba(214, 51, 108, 0.18);
+        --shadow-soft: 0 8px 32px rgba(214, 51, 108, 0.1);
+        --shadow-hover: 0 15px 40px rgba(214, 51, 108, 0.15);
+    }
+
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, #f9e3f2 0%, #fceff6 100%);
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        color: var(--text-dark);
+        margin-top: 80px; /* Account for navbar */
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        left: -60px;
+        width: 200%;
+        height: 200%;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(214, 51, 108, 0.03) 10px,
+            rgba(214, 51, 108, 0.03) 20px
+        );
+        animation: floatPattern 60s linear infinite;
+        z-index: 0;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        margin-bottom: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        font-weight: 300;
+        color: var(--text-muted);
+        margin-bottom: 3rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-hero {
+        background: var(--gradient-primary);
+        border: none;
+        padding: 12px 28px;
+        border-radius: 30px;
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(214, 51, 108, 0.3);
+    }
+
+    .btn-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-hero:hover::before {
+        left: 100%;
+    }
+
+    .btn-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(214, 51, 108, 0.4);
+        color: white;
+    }
+
+    /* Floating Shapes */
+    .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .shape {
+        position: absolute;
+        opacity: 0.1;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+        width: 100px;
+        height: 100px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .shape-2 {
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-primary);
+        border-radius: 20px;
+        top: 60%;
+        right: 10%;
+        animation-delay: 2s;
+        transform: rotate(45deg);
+    }
+
+    .shape-3 {
+        width: 60px;
+        height: 60px;
+        background: var(--gradient-primary);
+        border-radius: 30px;
+        top: 40%;
+        left: 70%;
+        animation-delay: 4s;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-30px) rotate(180deg); }
+    }
+
+    @keyframes floatPattern {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-100px, -100px); }
+    }
+
+    /* Stats Section */
+    .stats-section {
+        background: #fff;
+        padding: 5rem 0;
+        margin-top: -80px;
+        position: relative;
+        z-index: 3;
+    }
+
+    .stats-card {
+        background: var(--accent);
+        border-radius: var(--radius);
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-soft);
+    }
+
+    .stats-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .stats-number {
+        font-size: 2.8rem;
+        font-weight: bold;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+        color: var(--text-dark);
+        font-weight: 500;
+        opacity: 0.8;
+    }
+
+    /* Section Styling */
+    .section {
+        padding: 80px 0;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--text-dark);
+        text-shadow: 1px 1px 0 #f8f8f8;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 40px;
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+    }
+
+    /* Timeline */
+    .timeline {
+        border-left: 4px dashed var(--primary);
+        padding-left: 30px;
+        margin-top: 40px;
+        position: relative;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .timeline-item {
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        left: -42px;
+        top: 1rem;
+        box-shadow: 0 0 20px rgba(214, 51, 108, 0.5);
+    }
+
+    .timeline-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--shadow-soft);
+        transition: all 0.3s ease;
+    }
+
+    .timeline-content:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .timeline-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .timeline-text {
+        color: #555;
+        line-height: 1.7;
+        margin-top: 8px;
+    }
+
+    /* Values Section */
+    .values-section {
+        background: var(--accent);
+    }
+
+    .value-card {
+        border: 2px dashed var(--secondary);
+        background: #fff;
+        padding: 30px;
+        border-radius: var(--radius);
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .value-card:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .value-icon {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-secondary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .value-title {
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .value-text {
+        color: #555;
+        line-height: 1.6;
+    }
+
+    /* Team Section */
+    .team-section {
+        background: #fdfbfc;
+    }
+
+    .team-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 25px;
+        box-shadow: var(--shadow-soft);
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .team-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .team-avatar {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        background: var(--secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        font-size: 2rem;
+        color: var(--primary);
+        font-weight: bold;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-name {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-role {
+        color: var(--primary);
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .team-bio {
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .team-social {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .team-social a {
+        width: 40px;
+        height: 40px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .team-social a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(214, 51, 108, 0.4);
+    }
+
+    /* Testimonials */
+    .testimonial-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-soft);
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        font-size: 8rem;
+        color: var(--primary);
+        opacity: 0.1;
+        font-family: serif;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .testimonial-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 1.5rem;
+        background: var(--gradient-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .testimonial-quote {
+        font-style: italic;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .testimonial-author {
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        background: var(--gradient-primary);
+        color: white;
+        text-align: center;
+        position: relative;
+        padding: 70px 0;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.03) 10px,
+            rgba(255, 255, 255, 0.03) 20px
+        );
+        opacity: 0.05;
+        animation: moveBg 50s linear infinite;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .cta-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .cta-text {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 3rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-cta, .btn-outline-cta {
+        padding: 12px 28px;
+        border-radius: 30px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0 1rem;
+    }
+
+    .btn-cta {
+        background: #fff;
+        color: var(--primary);
+        border: 2px solid #fff;
+    }
+
+    .btn-outline-cta {
+        background: transparent;
+        border: 2px solid #fff;
+        color: #fff;
+    }
+
+    .btn-cta:hover,
+    .btn-outline-cta:hover {
+        background: #fff;
+        color: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes moveBg {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+        }
+        
+        .timeline {
+            padding-left: 20px;
+            border-left-width: 2px;
+        }
+        
+        .timeline-item::before {
+            width: 12px;
+            height: 12px;
+            left: -28px;
+        }
+        
+        .timeline-title {
+            font-size: 1.25rem;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+        }
+        
+        .btn-cta, .btn-outline-cta, .btn-hero {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            display: block;
+            margin: 1rem auto;
+            width: 80%;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .value-card, .stats-card, .team-card, .testimonial-card {
+            padding: 20px;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .floating-shapes {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+
+    // Stats Counter Animation
+    function animateStats() {
+        const statsNumbers = document.querySelectorAll('.stats-number');
+        
+        statsNumbers.forEach(stat => {
+            const target = parseInt(stat.getAttribute('data-target'));
+            const increment = target / 100;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                stat.textContent = Math.floor(current);
+            }, 20);
+        });
+    }
+
+    // Trigger stats animation when section is visible
+    const statsSection = document.querySelector('.stats-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateStats();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}
 
 {% block content %}
-<div class="position-relative z-1">
-
-  <!-- Hero Section -->
-  <section class="hero-section py-5 text-center bg-light">
-    <div class="container">
-      <h1 class="display-4 fw-bold" data-aos="fade-up">About MzBell's Bakery</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="200">Crafting sweet memories one masterpiece at a time.</p>
-      <div class="mt-4" data-aos="fade-up" data-aos-delay="400">
-        <a href="#story" class="btn btn-primary me-2"><i class="fas fa-book-open me-1"></i>Our Story</a>
-        <a href="#team" class="btn btn-outline-primary"><i class="fas fa-users me-1"></i>Meet the Team</a>
-      </div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
     </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="py-5 bg-white">
-    <div class="container">
-      <div class="row text-center">
-        {% for stat in stats %}
-        <div class="col-6 col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
-          <h2 class="fw-bold display-5 stats-number" data-target="{{ stat.value }}">0</h2>
-          <p class="text-muted">{{ stat.label }}</p>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  <!-- Story Section -->
-  <section id="story" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4" data-aos="fade-up">Our Sweet Journey</h2>
-      <p class="text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-        Every great bakery has a story. Ours begins with passion, tradition, and love for creating joy through flavor.
-      </p>
-      <div class="timeline">
-        {% for item in timeline %}
-        <div class="timeline-item mb-5" data-aos="fade-{{ forloop.counter|divisibleby:2|yesno:'left,right' }}" data-aos-delay="{{ forloop.counter|add_mul:'2,100' }}">
-          <h5 class="fw-bold">{{ item.title }}</h5>
-          <p>{{ item.text }}</p>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  <!-- Core Values Section -->
-  <section class="py-5 bg-white">
-    <div class="container">
-      <h2 class="text-center" data-aos="fade-up">Our Core Values</h2>
-      <div class="row mt-4">
-        {% for value in values %}
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
-          <div class="p-4 shadow-sm rounded bg-white text-center h-100">
-            <i class="fas {{ value.icon }} fa-2x mb-3 text-primary"></i>
-            <h5 class="fw-bold">{{ value.title }}</h5>
-            <p>{{ value.text }}</p>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  <!-- Team Section -->
-  <section id="team" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4" data-aos="fade-up">Meet the Team</h2>
-      <div class="row">
-        {% for member in team_members %}
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
-          <div class="card h-100 text-center p-3">
-            {% if member.image %}
-            <img src="{{ member.image.url }}" class="rounded-circle mx-auto mb-3" style="width: 100px; height: 100px; object-fit: cover;" alt="{{ member.name }}">
-            {% else %}
-            <div class="bg-secondary text-white rounded-circle d-inline-block mb-3 p-3 fs-4">{{ member.name|first|upper }}</div>
-            {% endif %}
-            <h5>{{ member.name }}</h5>
-            <p class="text-muted">{{ member.role }}</p>
-            {% if member.bio %}
-            <p class="small">{{ member.bio|truncatewords:20 }}</p>
-            {% endif %}
-            <div class="mt-2">
-              {% if member.twitter %}<a href="{{ member.twitter }}" class="me-2 text-dark"><i class="fab fa-twitter"></i></a>{% endif %}
-              {% if member.facebook %}<a href="{{ member.facebook }}" class="me-2 text-dark"><i class="fab fa-facebook-f"></i></a>{% endif %}
-              {% if member.instagram %}<a href="{{ member.instagram }}" class="me-2 text-dark"><i class="fab fa-instagram"></i></a>{% endif %}
-              {% if member.linkedin %}<a href="{{ member.linkedin }}" class="me-2 text-dark"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="hero-title" data-aos="fade-up">
+                    About <span style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">MzBell's</span> Bakery
+                </h1>
+                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+                    Where every creation tells a story of passion, tradition, and the art of making life sweeter.
+                </p>
+                <div data-aos="fade-up" data-aos-delay="400">
+                    <a href="#story" class="btn-hero">
+                        <i class="fas fa-arrow-down me-2"></i>Discover Our Story
+                    </a>
+                </div>
             </div>
-          </div>
         </div>
-        {% empty %}
-        <div class="col-12 text-center">No team members available yet.</div>
-        {% endfor %}
-      </div>
     </div>
-  </section>
-<!-- Testimonials Section -->
-<section class="py-5 bg-white">
-  <div class="container">
-    <h2 class="text-center mb-5" data-aos="fade-up">What Our Customers Say</h2>
-    <div class="row">
-      {% for t in testimonials %}
-      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
-        <div class="card h-100 text-center p-4 shadow-sm">
-         {% if t.image %}
-  <img src="{{ t.image.url }}" class="rounded-circle mx-auto mb-3" alt="{{ t.name }}" width="80" height="80" style="object-fit: cover;">
-{% endif %}
+</section>
 
-          <blockquote class="blockquote mb-0">
-            <p class="mb-3">“{{ t.quote }}”</p>
-            <footer class="blockquote-footer">{{ t.name }}</footer>
-          </blockquote>
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stats-card">
+                    <div class="stats-number" data-target="{{ stats.happy_customers|default:500 }}">0</div>
+                    <div class="stats-label">Happy Customers</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stats-card">
+                    <div class="stats-number" data-target="{{ stats.cakes_delivered|default:1000 }}">0</div>
+                    <div class="stats-label">Cakes Delivered</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stats-card">
+                    <div class="stats-number" data-target="{{ stats.years_experience|default:5 }}">0</div>
+                    <div class="stats-label">Years Experience</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="400">
+                <div class="stats-card">
+                    <div class="stats-number" data-target="{{ stats.unique_recipes|default:50 }}">0</div>
+                    <div class="stats-label">Unique Recipes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Story Section -->
+<section id="story" class="section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Our Sweet Journey</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Every masterpiece begins with a dream. Our story is woven with flour, sugar, and endless passion.
+        </p>
+        
+        <div class="timeline">
+            {% for milestone in story_milestones %}
+            <div class="timeline-item" data-aos="{% cycle 'fade-right' 'fade-left' %}" data-aos-delay="{{ forloop.counter|add_mul:200 }}">
+                <div class="timeline-content">
+                    <h3 class="timeline-title">{{ milestone.title }}</h3>
+                    <p class="timeline-text">{{ milestone.description }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="timeline-content">
+                    <h3 class="timeline-title">The Beginning</h3>
+                    <p class="timeline-text">Started with a passion for creating beautiful, delicious cakes from our home kitchen. What began as a hobby quickly turned into a calling to bring joy to others through our sweet creations.</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                <div class="timeline-content">
+                    <h3 class="timeline-title">First Shop</h3>
+                    <p class="timeline-text">Opened our first bakery location, bringing our handcrafted creations to the community. The overwhelming support from our neighbors gave us the confidence to dream bigger.</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="600">
+                <div class="timeline-content">
+                    <h3 class="timeline-title">Growing Family</h3>
+                    <p class="timeline-text">Expanded our team with talented bakers who share our commitment to excellence. Each team member brings their unique skills and passion to every creation we make.</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="800">
+                <div class="timeline-content">
+                    <h3 class="timeline-title">Today</h3>
+                    <p class="timeline-text">Continuing to innovate and create memorable experiences for every celebration. We're not just baking cakes - we're creating moments that bring families and friends together.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="section values-section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Our Core Values</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            The principles that guide every creation we make
+        </p>
+        
+        <div class="row g-4">
+            {% for value in core_values %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:150 }}">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="{{ value.icon }}"></i>
+                    </div>
+                    <h3 class="value-title">{{ value.title }}</h3>
+                    <p class="value-text">{{ value.description }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="150">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="value-title">Passion</h3>
+                    <p class="value-text">Every creation is made with love and dedication to bring joy to your special moments. We pour our hearts into each and every detail.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="value-title">Quality</h3>
+                    <p class="value-text">We use only the finest ingredients to ensure every bite is absolutely perfect. No compromises when it comes to excellence.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="450">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Community</h3>
+                    <p class="value-text">Building lasting relationships with our customers and being part of their celebrations. We're more than a bakery - we're family.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section id="team" class="section bg-light py-5">
+  <div class="container">
+    <h2 class="section-title text-center mb-4" data-aos="fade-up">Meet Our Team</h2>
+    <p class="section-subtitle text-center mb-5" data-aos="fade-up" data-aos-delay="100">
+      Passionate professionals behind MzBell’s sweetest creations.
+    </p>
+
+    <div class="row g-4">
+      {% for member in team_members %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,150' }}">
+        <div class="team-card text-center p-4 shadow-sm h-100 bg-white rounded">
+          {% if member.image %}
+          <img src="{{ member.image.url }}" alt="{{ member.name }}" class="rounded-circle mb-3"
+               style="width: 100px; height: 100px; object-fit: cover;">
+          {% else %}
+          <div class="team-avatar bg-secondary text-white rounded-circle d-inline-block mb-3"
+               style="width: 100px; height: 100px; line-height: 100px; font-size: 1.8rem;">
+            {{ member.name|first|upper }}
+          </div>
+          {% endif %}
+          <h3 class="team-name fw-bold mb-1">{{ member.name }}</h3>
+          <p class="team-role text-muted">{{ member.role }}</p>
+          <p class="team-bio small">{{ member.bio }}</p>
+          <div class="team-social mt-2">
+            {% if member.facebook %}
+              <a href="{{ member.facebook }}" class="me-2 text-primary"><i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+            {% if member.instagram %}
+              <a href="{{ member.instagram }}" class="me-2 text-danger"><i class="fab fa-instagram"></i></a>
+            {% endif %}
+            {% if member.linkedin %}
+              <a href="{{ member.linkedin }}" class="me-2 text-info"><i class="fab fa-linkedin-in"></i></a>
+            {% endif %}
+            {% if member.twitter %}
+              <a href="{{ member.twitter }}" class="me-2 text-dark"><i class="fab fa-twitter"></i></a>
+            {% endif %}
+          </div>
         </div>
       </div>
       {% empty %}
-      <div class="col-12 text-center">No testimonials yet. Be the first to share your sweet story!</div>
+      <div class="col-12 text-center">
+        <p>No team members added yet.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="section bg-white py-5">
+  <div class="container">
+    <h2 class="section-title text-center mb-4" data-aos="fade-up">What Our Customers Say</h2>
+    <p class="section-subtitle text-center mb-5" data-aos="fade-up" data-aos-delay="100">
+      Real stories from real customers who made their celebrations unforgettable
+    </p>
+    
+    <div class="row g-4">
+      {% for testimonial in testimonials %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,150' }}">
+        <div class="testimonial-card p-4 shadow-sm text-center h-100">
+          {% if testimonial.image %}
+          <img src="{{ testimonial.image.url }}" class="rounded-circle mb-3" alt="{{ testimonial.name }}"
+               style="width: 80px; height: 80px; object-fit: cover;">
+          {% else %}
+          <div class="testimonial-avatar bg-primary text-white rounded-circle d-inline-block mb-3"
+               style="width: 80px; height: 80px; line-height: 80px; font-size: 1.5rem;">
+            {{ testimonial.name|first|upper }}
+          </div>
+          {% endif %}
+          <p class="testimonial-quote fst-italic">"{{ testimonial.quote }}"</p>
+          <div class="testimonial-author fw-bold mt-2">- {{ testimonial.name }}</div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center">
+        <p>No testimonials yet. Be the first to share your sweet story!</p>
+      </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
 
-  <!-- CTA Section -->
-  <section class="py-5 text-center text-white bg-primary">
+<!-- Awards & Recognition Section -->
+<section class="section values-section">
     <div class="container">
-      <h2 class="fw-bold mb-3" data-aos="fade-up">Ready to Create Something Sweet?</h2>
-      <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">Let us make your special moments unforgettable.</p>
-      <a href="{% url 'frontend:product_list' %}" class="btn btn-light me-2"><i class="fas fa-store me-1"></i> Shop Now</a>
-      <a href="{% url 'frontend:contact' %}" class="btn btn-outline-light"><i class="fas fa-envelope me-1"></i> Contact Us</a>
+        <h2 class="section-title" data-aos="fade-up">Awards & Recognition</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Celebrating our achievements and milestones
+        </p>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="150">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="value-title">Best Bakery 2023</h3>
+                    <p class="value-text">Awarded by the Local Business Association for exceptional service and quality.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3 class="value-title">Customer Choice</h3>
+                    <p class="value-text">Voted #1 by customers for three consecutive years for outstanding service.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="450">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="value-title">Quality Certified</h3>
+                    <p class="value-text">Certified for maintaining the highest standards in food safety and quality.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="600">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="value-title">Community Partner</h3>
+                    <p class="value-text">Recognized for outstanding community involvement and charitable contributions.</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
+</section>
 
-</div>
-{% endblock %}
+<!-- Call to Action Section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="cta-title" data-aos="fade-up">Ready to Create Something Sweet?</h2>
+                    <p class="cta-text" data-aos="fade-up" data-aos-delay="200">
+                        Let's bring your vision to life with our custom creations. Every celebration deserves something special.
+                    </p>
+                    <div data-aos="fade-up" data-aos-delay="400">
+                        <a href="/contact/" class="btn-cta">
+                            <i class="fas fa-phone me-2"></i>Get in Touch
+                        </a>
+                        <a href="/gallery/" class="btn-outline-cta">
+                            <i class="fas fa-images me-2"></i>View Our Work
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-{% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script>
-  AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
 
-  function animateCounters() {
-    document.querySelectorAll('.stats-number').forEach(counter => {
-      const target = +counter.dataset.target;
-      let count = 0;
-      const step = target / 60;
-      function update() {
-        if (count < target) {
-          count += step;
-          counter.innerText = Math.floor(count) + '+';
-          requestAnimationFrame(update);
-        } else {
-          counter.innerText = target + '+';
+
+<script
+
+// Enhanced Story Section JavaScript Features
+
+// Timeline Progress Bar
+function initTimelineProgressBar() {
+    const timeline = document.querySelector('.timeline');
+    if (!timeline) return;
+    
+    // Create progress bar
+    const progressBar = document.createElement('div');
+    progressBar.className = 'timeline-progress';
+    progressBar.style.cssText = `
+        position: absolute;
+        left: -2px;
+        top: 0;
+        width: 4px;
+        height: 0%;
+        background: linear-gradient(to bottom, var(--primary), #b8285a);
+        transition: height 0.3s ease;
+        z-index: 1;
+    `;
+    timeline.appendChild(progressBar);
+    
+    // Update progress on scroll
+    window.addEventListener('scroll', () => {
+        const timelineRect = timeline.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        if (timelineRect.top < windowHeight && timelineRect.bottom > 0) {
+            const progress = Math.max(0, Math.min(100, 
+                ((windowHeight - timelineRect.top) / (timelineRect.height + windowHeight)) * 100
+            ));
+            progressBar.style.height = `${progress}%`;
         }
-      }
-      update();
     });
-  }
+}
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateCounters();
-        observer.unobserve(entry.target);
-      }
+// Interactive Timeline Items
+function initInteractiveTimeline() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    timelineItems.forEach((item, index) => {
+        const content = item.querySelector('.timeline-content');
+        
+        // Add click to expand functionality
+        content.addEventListener('click', () => {
+            // Toggle expanded state
+            const isExpanded = item.classList.contains('expanded');
+            
+            // Close all other items
+            timelineItems.forEach(otherItem => {
+                otherItem.classList.remove('expanded');
+            });
+            
+            // Toggle current item
+            if (!isExpanded) {
+                item.classList.add('expanded');
+                
+                // Add expanded content if available
+                const expandedText = content.dataset.expandedText;
+                if (expandedText && !content.querySelector('.expanded-content')) {
+                    const expandedDiv = document.createElement('div');
+                    expandedDiv.className = 'expanded-content';
+                    expandedDiv.style.cssText = `
+                        margin-top: 1rem;
+                        padding-top: 1rem;
+                        border-top: 1px solid #e0e0e0;
+                        color: #666;
+                        font-size: 0.9rem;
+                        line-height: 1.6;
+                        opacity: 0;
+                        animation: fadeInUp 0.5s ease forwards;
+                    `;
+                    expandedDiv.textContent = expandedText;
+                    content.appendChild(expandedDiv);
+                }
+            }
+        });
+        
+        // Add hover effects
+        item.addEventListener('mouseenter', () => {
+            if (!item.classList.contains('expanded')) {
+                content.style.transform = 'translateY(-3px) scale(1.02)';
+                content.style.boxShadow = '0 20px 40px rgba(214, 51, 108, 0.15)';
+            }
+        });
+        
+        item.addEventListener('mouseleave', () => {
+            if (!item.classList.contains('expanded')) {
+                content.style.transform = 'translateY(0) scale(1)';
+                content.style.boxShadow = 'var(--shadow-soft)';
+            }
+        });
     });
-  }, { threshold: 0.1 });
+}
 
-  document.querySelectorAll('.stats-number').forEach(el => observer.observe(el));
-</script>
-{% endblock %}
+// Timeline Item Counter Animation
+function initTimelineCounters() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    timelineItems.forEach((item, index) => {
+        // Add step number
+        const stepNumber = document.createElement('div');
+        stepNumber.className = 'timeline-step';
+        stepNumber.textContent = String(index + 1).padStart(2, '0');
+        stepNumber.style.cssText = `
+            position: absolute;
+            left: -80px;
+            top: 1rem;
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(214, 51, 108, 0.3);
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        `;
+        item.appendChild(stepNumber);
+        
+        // Animate step number when in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        stepNumber.style.transform = 'scale(1)';
+                    }, 200);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        observer.observe(item);
+    });
+}
+
+// Timeline Date Integration
+function initTimelineDates() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const dates = ['2019', '2020', '2021', '2024']; // Example dates
+    
+    timelineItems.forEach((item, index) => {
+        if (dates[index]) {
+            const dateElement = document.createElement('div');
+            dateElement.className = 'timeline-date';
+            dateElement.textContent = dates[index];
+            dateElement.style.cssText = `
+                position: absolute;
+                right: -60px;
+                top: 1rem;
+                color: var(--primary);
+                font-weight: bold;
+                font-size: 1.1rem;
+                opacity: 0;
+                transform: translateX(20px);
+                transition: all 0.5s ease;
+            `;
+            item.appendChild(dateElement);
+            
+            // Animate date when timeline item is visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            dateElement.style.opacity = '1';
+                            dateElement.style.transform = 'translateX(0)';
+                        }, 400);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            observer.observe(item);
+        }
+    });
+}
+
+// Timeline Particle Effects
+function initTimelineParticles() {
+    const timeline = document.querySelector('.timeline');
+    if (!timeline) return;
+    
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    timelineItems.forEach((item, index) => {
+        // Create particle container
+        const particleContainer = document.createElement('div');
+        particleContainer.className = 'timeline-particles';
+        particleContainer.style.cssText = `
+            position: absolute;
+            left: -50px;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        `;
+        
+        // Create particles
+        for (let i = 0; i < 5; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: absolute;
+                width: 3px;
+                height: 3px;
+                background: var(--primary);
+                border-radius: 50%;
+                opacity: 0;
+                left: 50%;
+                animation: timelineParticle ${2 + Math.random() * 2}s ease-in-out infinite;
+                animation-delay: ${Math.random() * 2}s;
+            `;
+            particleContainer.appendChild(particle);
+        }
+        
+        item.appendChild(particleContainer);
+        
+        // Trigger particles when item comes into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const particles = entry.target.querySelectorAll('.timeline-particles div');
+                if (entry.isIntersecting) {
+                    particles.forEach(particle => {
+                        particle.style.animationPlayState = 'running';
+                    });
+                } else {
+                    particles.forEach(particle => {
+                        particle.style.animationPlayState = 'paused';
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        observer.observe(item);
+    });
+}
+
+// Initialize all timeline enhancements
+function initStorySection() {
+    initTimelineProgressBar();
+    initInteractiveTimeline();
+    initTimelineCounters();
+    initTimelineDates();
+    initTimelineParticles();
+    
+    // Add required CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes timelineParticle {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0);
+            }
+            50% {
+                opacity: 0.6;
+                transform: translateY(-20px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-40px) scale(0);
+            }
+        }
+        
+        .timeline-item.expanded .timeline-content {
+            transform: translateY(-5px) scale(1.02) !important;
+            box-shadow: 0 25px 50px rgba(214, 51, 108, 0.2) !important;
+            cursor: default;
+        }
+        
+        .timeline-content {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline {
+            position: relative;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-step {
+                left: -35px !important;
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 0.8rem !important;
+            }
+            
+            .timeline-date {
+                right: -50px !important;
+                font-size: 1rem !important;
+            }
+            
+            .timeline-particles {
+                display: none;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Testimonial Carousel/Slider functionality
+function initTestimonialSlider() {
+    const testimonials = document.querySelectorAll('.testimonial-card');
+    let currentIndex = 0;
+    
+    if (testimonials.length > 3) {
+        // Auto-rotate testimonials every 5 seconds
+        setInterval(() => {
+            testimonials[currentIndex].style.opacity = '0.3';
+            currentIndex = (currentIndex + 1) % testimonials.length;
+            testimonials[currentIndex].style.opacity = '1';
+        }, 5000);
+    }
+}
+
+// Parallax effect for hero section
+function initParallaxEffect() {
+    const hero = document.querySelector('.hero-section');
+    const shapes = document.querySelectorAll('.shape');
+    
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        if (hero) {
+            hero.style.transform = `translateY(${rate}px)`;
+        }
+        
+        shapes.forEach((shape, index) => {
+            const speed = (index + 1) * 0.3;
+            shape.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+        });
+    });
+}
+
+// Team member hover effects with additional animations
+function initTeamInteractions() {
+    const teamCards = document.querySelectorAll('.team-card');
+    
+    teamCards.forEach(card => {
+        const avatar = card.querySelector('.team-avatar');
+        const socialLinks = card.querySelector('.team-social');
+        
+        card.addEventListener('mouseenter', () => {
+            avatar.style.transform = 'scale(1.1) rotate(5deg)';
+            socialLinks.style.transform = 'translateY(-10px)';
+            socialLinks.style.opacity = '1';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            avatar.style.transform = 'scale(1) rotate(0deg)';
+            socialLinks.style.transform = 'translateY(0)';
+        });
+    });
+}
+
+// Timeline progress indicator
+function initTimelineProgress() {
+    const timeline = document.querySelector('.timeline');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    if (timeline) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('timeline-active');
+                    // Add glow effect to timeline dot
+                    const dot = entry.target.querySelector('::before');
+                    if (dot) {
+                        entry.target.style.setProperty('--dot-glow', '0 0 20px rgba(214, 51, 108, 0.8)');
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+
+        timelineItems.forEach(item => observer.observe(item));
+    }
+}
+
+// Value cards interaction with tilt effect
+function initValueCardTilt() {
+    const valueCards = document.querySelectorAll('.value-card');
+    
+    valueCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+    });
+}
+
+// Awards section with counter animation
+function initAwardsAnimation() {
+    const awardCards = document.querySelectorAll('.value-card');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const icon = entry.target.querySelector('.value-icon i');
+                if (icon) {
+                    // Add bounce animation
+                    icon.style.animation = 'bounce 1s ease-in-out';
+                    setTimeout(() => {
+                        icon.style.animation = '';
+                    }, 1000);
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    awardCards.forEach(card => observer.observe(card));
+}
+
+// Enhanced CTA section with particle effects
+function initCTAParticles() {
+    const ctaSection = document.querySelector('.cta-section');
+    
+    if (ctaSection) {
+        // Create floating particles
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.cssText = `
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                pointer-events: none;
+                animation: floatParticle ${Math.random() * 3 + 2}s linear infinite;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation-delay: ${Math.random() * 2}s;
+            `;
+            ctaSection.appendChild(particle);
+        }
+    }
+}
+
+// Smooth reveal animations for sections
+function initSectionReveal() {
+    const sections = document.querySelectorAll('.section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('section-revealed');
+                // Add stagger effect to child elements
+                const children = entry.target.querySelectorAll('[data-aos]');
+                children.forEach((child, index) => {
+                    setTimeout(() => {
+                        child.classList.add('aos-animate');
+                    }, index * 100);
+                });
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    sections.forEach(section => observer.observe(section));
+}
+
+// Lazy loading for images (if any team photos are added)
+function initLazyLoading() {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+    
+    images.forEach(img => imageObserver.observe(img));
+}
+
+// Initialize all features when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize timeline features
+    initStorySection();
+    
+    // Initialize about page features
+    initTestimonialSlider();
+    initParallaxEffect();
+    initTeamInteractions();
+    initTimelineProgress();
+    initValueCardTilt();
+    initAwardsAnimation();
+    initCTAParticles();
+    initSectionReveal();
+    initLazyLoading();
+    
+    // Add CSS for additional animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            80% { transform: translateY(-10px); }
+        }
+        
+        .timeline-active::before {
+            box-shadow: var(--dot-glow, 0 0 20px rgba(214, 51, 108, 0.5)) !important;
+        }
+        
+        .section-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .team-social {
+            transition: all 0.3s ease;
+        }
+        
+        .team-avatar {
+            transition: all 0.3s ease;
+        }
+        
+        .value-card {
+            transition: all 0.3s ease;
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script
+{%endblock%}
