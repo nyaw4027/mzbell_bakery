@@ -286,11 +286,17 @@
         {% for product in category.products.all %}
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="product-card h-100">
-              {% if product.get_image %}
-                <div class="product-image-container">
-                  <img src="{{ product.get_image }}" class="product-image w-100" alt="{{ product.name }}">
-                </div>
-              {% endif %}
+      {% if product.get_image %}
+  <div class="product-image-container">
+    <img src="{{ product.get_image }}" class="product-image w-100" alt="{{ product.name }}">
+  </div>
+{% else %}
+  <img src="{% static 'images/placeholder.jpg' %}" class="product-image w-100" alt="No image">
+{% endif %}
+
+
+
+
               <div class="card-body text-center p-4">
                 <h5 class="product-title">{{ product.name }}</h5>
                 <p class="product-description">{{ product.description|truncatewords:20 }}</p>

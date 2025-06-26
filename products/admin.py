@@ -61,7 +61,7 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
     def image_preview(self, obj):
-        img = obj.get_image()
+        img = obj.get_image
         if img:
             return format_html(
                 '<a href="{0}" target="_blank">'

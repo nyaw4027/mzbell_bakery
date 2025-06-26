@@ -25,9 +25,7 @@ class Category(models.Model):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='category_images/', null=True, blank=True, validators=[validate_image_size])
     image_url = models.URLField(
-        max_length=500,
-        blank=True,
-        null=True,
+        max_length=500, blank=True, null=True,
         validators=[URLValidator(), validate_image_url],
         help_text="Paste an image URL (e.g., https://example.com/image.jpg)"
     )
@@ -36,10 +34,12 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ['name']
 
     def __str__(self):
         return self.name
 
+    @property
     def get_image(self):
         if self.image:
             return self.image.url
@@ -48,16 +48,16 @@ class Category(models.Model):
         return '/static/images/placeholder.jpg'
 
     def image_tag(self):
-        img = self.get_image()
-        if img:
-            return mark_safe(f'<img src="{img}" width="100" height="100" style="object-fit: cover; border-radius: 5px;" />')
-        return "(No image)"
+        return mark_safe(f'<img src="{self.get_image}" width="100" height="100" style="object-fit: cover; border-radius: 5px;" />')
     image_tag.short_description = 'Image Preview'
 
 
 # === Tag ===
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -71,15 +71,15 @@ class Product(models.Model):
     
     image = models.ImageField(upload_to='product_images/', blank=True, null=True, validators=[validate_image_size])
     image_url = models.URLField(
-        max_length=500,
-        blank=True,
-        null=True,
+        max_length=500, blank=True, null=True,
         validators=[URLValidator(), validate_image_url],
         help_text="Paste an image URL (e.g., https://example.com/image.jpg)"
     )
 
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     stock = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
+
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     tags = models.ManyToManyField(Tag, blank=True)
 
@@ -87,13 +87,20 @@ class Product(models.Model):
     is_featured = models.BooleanField(default=False)
     is_new_arrival = models.BooleanField(default=False)
     is_on_sale = models.BooleanField(default=False)
-    sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     ingredients = models.TextField(blank=True)
     allergens = models.CharField(max_length=500, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.name
+
+    @property
     def get_image(self):
         if self.image:
             return self.image.url
@@ -102,23 +109,19 @@ class Product(models.Model):
         return '/static/images/placeholder.jpg'
 
     def image_tag(self):
-        img = self.get_image()
-        if img:
-            return mark_safe(f'<img src="{img}" width="100" height="100" style="object-fit: cover; border-radius: 5px;" />')
-        return "(No image)"
+        return mark_safe(f'<img src="{self.get_image}" width="100" height="100" style="object-fit: cover; border-radius: 5px;" />')
     image_tag.short_description = 'Image Preview'
 
     def average_rating(self):
         reviews = self.reviews.all()
-        return round(sum(r.rating for r in reviews) / len(reviews), 1) if reviews.exists() else 0
+        if reviews.exists():
+            return round(sum(r.rating for r in reviews) / len(reviews), 1)
+        return 0
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
 
 
 # === ProductVariation ===
