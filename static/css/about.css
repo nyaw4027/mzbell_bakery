@@ -329,3 +329,36 @@ section {
   .timeline { padding-left: 20px; border-left-width: 2px; }
   .timeline-dot { width: 12px; height: 12px; left: -10px; }
 }
+
+/* Testimonials Section */
+.testimonial-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #f8d3e2;
+  margin-bottom: 1rem;
+}
+
+.testimonial-quote {
+  font-style: italic;
+  color: #555;
+}
+
+.testimonial-footer {
+  font-weight: 600;
+  color: #333;
+}
+

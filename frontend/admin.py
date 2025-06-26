@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.db import models
-from .models import ContactMessage, TeamMember
+from .models import ContactMessage, TeamMember, Testimonial
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
@@ -32,12 +32,16 @@ class TeamMemberAdmin(admin.ModelAdmin):
     image_tag.short_description = 'Photo'
 
 
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ('name', 'short_quote', 'image_preview')
 
-class Testimonial(models.Model):
-    name = models.CharField(max_length=100)
-    quote = models.TextField()
-    image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    def short_quote(self, obj):
+        return (obj.quote[:50] + '...') if len(obj.quote) > 50 else obj.quote
+    short_quote.short_description = 'Quote'
 
-    def __str__(self):
-        return self.name
-
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="height:50px;width:50px;border-radius:50%;">', obj.image.url)
+        return "No Image"
+    image_preview.short_description = 'Image'

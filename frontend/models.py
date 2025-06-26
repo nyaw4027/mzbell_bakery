@@ -29,3 +29,11 @@ class TeamMember(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.role}"
+    
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    quote = models.TextField()
+    image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
