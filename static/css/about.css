@@ -1,0 +1,331 @@
+:root {
+  --primary: #d6336c;
+  --secondary: #ffe4e1;
+  --accent: #fff0f5;
+  --text-dark: #4b1e2f;
+  --text-muted: #6b2737a5;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --radius: 20px;
+  --font-main: 'Poppins', sans-serif;
+}
+
+/* Base Styling */
+section {
+  padding: 80px 0;
+  font-family: var(--font-main);
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 0 #f8f8f8;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  max-width: 720px;
+  margin-inline: auto;
+  line-height: 1.6;
+}
+
+/* Hero */
+.hero-section {
+  background: linear-gradient(135deg, #f9e3f2, #fceff6);
+  color: var(--text-dark);
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 200%;
+  height: 200%;
+  background: url('/static/images/sprinkles.png');
+  background-size: contain;
+  opacity: 0.05;
+  animation: floatPattern 60s linear infinite;
+  z-index: 0;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin: 15px 0 30px;
+}
+
+.btn-hero {
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 30px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-light-custom {
+  background: #fff;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn-outline-light-custom {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.btn-hero:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Stats */
+.stats-section {
+  background: #fff;
+  text-align: center;
+}
+
+.stat-card {
+  background: var(--accent);
+  border-radius: var(--radius);
+  padding: 30px;
+  box-shadow: 0 10px 20px var(--shadow);
+  transition: 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.12);
+}
+
+.stats-number {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.stat-label {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Timeline / Story */
+.story-section {
+  background: #fff;
+}
+
+.timeline {
+  border-left: 4px dashed var(--primary);
+  padding-left: 30px;
+  margin-top: 40px;
+}
+
+.timeline-item {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.placeholder-avatar {
+  width: 100px;
+  height: 100px;
+  background: #ccc;
+  border-radius: 50%;
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.timeline-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.timeline-content p {
+  color: #555;
+  margin-top: 8px;
+  line-height: 1.7;
+}
+
+/* Values */
+.values-section {
+  background: var(--accent);
+}
+
+.value-card {
+  border: 2px dashed var(--secondary);
+  background: #fff;
+  padding: 30px;
+  border-radius: var(--radius);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.value-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+.value-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.value-title {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+/* Team */
+.team-section {
+  background: #fdfbfc;
+}
+
+.team-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 25px;
+  box-shadow: 0 6px 18px var(--shadow);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px var(--shadow);
+}
+
+.team-avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.team-name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.team-position {
+  font-style: italic;
+  color: #888;
+}
+
+.team-bio {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* CTA */
+.cta-section {
+  background: linear-gradient(135deg, var(--primary), #f8a5c2);
+  color: #fff;
+  position: relative;
+  padding: 70px 0;
+}
+
+.cta-section::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: url('/static/images/cta-pattern.svg');
+  opacity: 0.05;
+  animation: moveBg 50s linear infinite;
+}
+
+.btn-cta, .btn-outline-cta {
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-cta {
+  background: #fff;
+  color: var(--primary);
+}
+
+.btn-outline-cta {
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.btn-cta:hover,
+.btn-outline-cta:hover {
+  background: #fff;
+  color: #6b2737;
+}
+
+/* Decorative Background */
+.decorative-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg ... %3E"); /* kept same as yours */
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes floatPattern {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100px, -100px); }
+}
+
+@keyframes moveBg {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.2rem; }
+  .stats-number { font-size: 2rem; }
+  .timeline-title { font-size: 1.25rem; }
+}
+
+@media (max-width: 576px) {
+  .section-title { font-size: 1.75rem; }
+  .section-subtitle { font-size: 1rem; }
+  .value-card, .stat-card, .team-card { padding: 20px; }
+  .btn-cta, .btn-outline-cta, .btn-hero { padding: 10px 20px; font-size: 0.9rem; }
+  .timeline { padding-left: 20px; border-left-width: 2px; }
+  .timeline-dot { width: 12px; height: 12px; left: -10px; }
+}

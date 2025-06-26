@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}About Us - MzBell's Bakery{% endblock %}
 
@@ -7,803 +8,198 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-<style>
-    :root {
-        --primary-color: #8B4513;
-        --secondary-color: #D2691E;
-        --accent-color: #F4A460;
-        --text-dark: #3C2414;
-        --background-light: #FDF5E6;
-        --gradient-primary: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-        --gradient-secondary: linear-gradient(135deg, #F4A460 0%, #D2691E 100%);
-        --shadow-light: 0 5px 15px rgba(139, 69, 19, 0.1);
-        --shadow-medium: 0 10px 30px rgba(139, 69, 19, 0.15);
-        --shadow-heavy: 0 20px 40px rgba(139, 69, 19, 0.2);
-    }
-
-    body {
-        font-family: 'Georgia', serif;
-        line-height: 1.7;
-        color: var(--text-dark);
-        overflow-x: hidden;
-    }
-
-    /* Hero Section */
-    .hero-section {
-        background: var(--gradient-primary);
-        color: white;
-        padding: 120px 0 80px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.06)"/></svg>');
-        background-size: 150px 150px;
-        animation: float 25s infinite linear;
-    }
-
-    @keyframes float {
-        0% { transform: translateY(0px) rotate(0deg); }
-        100% { transform: translateY(-150px) rotate(360deg); }
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 2;
-    }
-
-    .hero-title {
-        font-size: 4rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .hero-subtitle {
-        font-size: 1.4rem;
-        margin-bottom: 2rem;
-        opacity: 0.95;
-    }
-
-    /* Stats Section */
-    .stats-section {
-        background: white;
-        padding: 60px 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    .stat-item {
-        text-align: center;
-        padding: 20px;
-        transition: transform 0.3s ease;
-    }
-
-    .stat-item:hover {
-        transform: translateY(-5px);
-    }
-
-    .stats-counter {
-        font-size: 3.5rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        display: block;
-        margin-bottom: 10px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    }
-
-    .stat-label {
-        font-size: 1.1rem;
-        color: #666;
-        font-weight: 500;
-    }
-
-    /* Story Section */
-    .story-section {
-        background: var(--background-light);
-        padding: 100px 0;
-    }
-
-    .section-title {
-        font-size: 3.5rem;
-        font-weight: 700;
-        color: var(--text-dark);
-        margin-bottom: 1.5rem;
-        text-align: center;
-    }
-
-    .section-subtitle {
-        font-size: 1.3rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 4rem;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    /* Timeline */
-    .timeline {
-        position: relative;
-        padding: 40px 0;
-        max-width: 900px;
-        margin: 0 auto;
-    }
-
-    .timeline::before {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: var(--gradient-primary);
-        transform: translateX(-50%);
-        border-radius: 2px;
-    }
-
-    .timeline-item {
-        margin-bottom: 60px;
-        position: relative;
-    }
-
-    .timeline-item:nth-child(odd) .timeline-content {
-        margin-right: 55%;
-        text-align: right;
-    }
-
-    .timeline-item:nth-child(even) .timeline-content {
-        margin-left: 55%;
-        text-align: left;
-    }
-
-    .timeline-marker {
-        position: absolute;
-        left: 50%;
-        top: 30px;
-        width: 24px;
-        height: 24px;
-        background: var(--secondary-color);
-        border: 5px solid white;
-        border-radius: 50%;
-        transform: translateX(-50%);
-        box-shadow: 0 0 0 4px var(--secondary-color), var(--shadow-light);
-        z-index: 2;
-    }
-
-    .timeline-content {
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: var(--shadow-medium);
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .timeline-content:hover {
-        box-shadow: var(--shadow-heavy);
-        transform: translateY(-5px);
-    }
-
-    .timeline-content::before {
-        content: '';
-        position: absolute;
-        top: 30px;
-        width: 0;
-        height: 0;
-        border: 15px solid transparent;
-    }
-
-    .timeline-item:nth-child(odd) .timeline-content::before {
-        right: -30px;
-        border-left-color: white;
-    }
-
-    .timeline-item:nth-child(even) .timeline-content::before {
-        left: -30px;
-        border-right-color: white;
-    }
-
-    .timeline-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 15px;
-    }
-
-    /* Values Section */
-    .values-section {
-        padding: 100px 0;
-        background: white;
-    }
-
-    .value-card {
-        background: white;
-        border: none;
-        border-radius: 25px;
-        box-shadow: var(--shadow-light);
-        padding: 50px 30px;
-        text-align: center;
-        height: 100%;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .value-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 5px;
-        background: var(--gradient-primary);
-        transform: translateY(-5px);
-        transition: transform 0.4s ease;
-    }
-
-    .value-card:hover {
-        transform: translateY(-10px);
-        box-shadow: var(--shadow-heavy);
-    }
-
-    .value-card:hover::before {
-        transform: translateY(0);
-    }
-
-    .value-icon {
-        width: 100px;
-        height: 100px;
-        background: var(--gradient-secondary);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 2.5rem;
-        margin: 0 auto 30px;
-        box-shadow: var(--shadow-light);
-        transition: transform 0.3s ease;
-    }
-
-    .value-card:hover .value-icon {
-        transform: scale(1.1) rotate(5deg);
-    }
-
-    .value-title {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--text-dark);
-        margin-bottom: 20px;
-    }
-
-    /* Team Section */
-    .team-section {
-        background: var(--background-light);
-        padding: 100px 0;
-    }
-
-    .team-card {
-        background: white;
-        border: none;
-        border-radius: 25px;
-        box-shadow: var(--shadow-light);
-        padding: 40px 30px;
-        text-align: center;
-        height: 100%;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .team-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--gradient-primary);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-
-    .team-card:hover {
-        transform: translateY(-10px);
-        box-shadow: var(--shadow-heavy);
-        color: white;
-    }
-
-    .team-card:hover::before {
-        opacity: 0.95;
-    }
-
-    .team-card:hover .team-avatar {
-        border-color: white;
-        box-shadow: 0 0 0 5px rgba(255,255,255,0.3);
-    }
-
-    .team-avatar {
-        width: 140px;
-        height: 140px;
-        border-radius: 50%;
-        margin: 0 auto 25px;
-        background: var(--gradient-secondary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: white;
-        font-weight: 700;
-        position: relative;
-        z-index: 2;
-        border: 5px solid white;
-        box-shadow: var(--shadow-medium);
-        transition: all 0.4s ease;
-    }
-
-    .team-avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-
-    .team-name {
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .team-position {
-        font-size: 1rem;
-        margin-bottom: 20px;
-        opacity: 0.8;
-        position: relative;
-        z-index: 2;
-    }
-
-    .team-bio {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        position: relative;
-        z-index: 2;
-    }
-
-    /* CTA Section */
-    .cta-section {
-        background: white;
-        padding: 100px 0;
-    }
-
-    .btn-custom {
-        background: var(--gradient-primary);
-        border: none;
-        color: white;
-        padding: 15px 40px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-        box-shadow: var(--shadow-light);
-    }
-
-    .btn-custom:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-heavy);
-        color: white;
-    }
-
-    .btn-outline-custom {
-        border: 2px solid var(--primary-color);
-        color: var(--primary-color);
-        background: transparent;
-        padding: 13px 38px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-outline-custom:hover {
-        background: var(--primary-color);
-        color: white;
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-medium);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.5rem;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.1rem;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-        }
-        
-        .timeline::before {
-            left: 30px;
-        }
-        
-        .timeline-item:nth-child(odd) .timeline-content,
-        .timeline-item:nth-child(even) .timeline-content {
-            margin-left: 80px;
-            margin-right: 0;
-            text-align: left;
-        }
-        
-        .timeline-marker {
-            left: 30px;
-        }
-        
-        .timeline-content::before {
-            display: none;
-        }
-        
-        .stats-counter {
-            font-size: 2.5rem;
-        }
-    }
-
-    /* Loading animations */
-    .fade-in-up {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.6s ease;
-    }
-
-    .fade-in-up.animate {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .scale-in {
-        opacity: 0;
-        transform: scale(0.8);
-        transition: all 0.6s ease;
-    }
-
-    .scale-in.animate {
-        opacity: 1;
-        transform: scale(1);
-    }
-</style>
+<link href="{% static 'css/about.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center hero-content">
-            <div class="col-lg-10 mx-auto text-center">
-                <h1 class="hero-title" data-aos="fade-up" data-aos-duration="1000">About MzBell's Bakery</h1>
-                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                    Crafting sweet memories since our beginning, one delicious treat at a time
-                </p>
-                <div class="d-flex justify-content-center gap-3 flex-wrap" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
-                    <a href="#story" class="btn btn-light btn-lg px-4 py-3">
-                        <i class="fas fa-book-open me-2"></i>Our Story
-                    </a>
-                    <a href="#team" class="btn btn-outline-light btn-lg px-4 py-3">
-                        <i class="fas fa-users me-2"></i>Meet the Team
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<div class="position-relative z-1">
 
-<!-- Stats Section -->
-<section class="stats-section">
+  <!-- Hero Section -->
+  <section class="hero-section py-5 text-center bg-light">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
-                    <span class="stats-counter" data-target="500">0</span>
-                    <p class="stat-label">Happy Customers</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
-                    <span class="stats-counter" data-target="50">0</span>
-                    <p class="stat-label">Cake Varieties</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
-                    <span class="stats-counter" data-target="5">0</span>
-                    <p class="stat-label">Years Experience</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
-                    <span class="stats-counter" data-target="1000">0</span>
-                    <p class="stat-label">Cakes Baked</p>
-                </div>
-            </div>
-        </div>
+      <h1 class="display-4 fw-bold" data-aos="fade-up">About MzBell's Bakery</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="200">Crafting sweet memories one masterpiece at a time.</p>
+      <div class="mt-4" data-aos="fade-up" data-aos-delay="400">
+        <a href="#story" class="btn btn-primary me-2"><i class="fas fa-book-open me-1"></i>Our Story</a>
+        <a href="#team" class="btn btn-outline-primary"><i class="fas fa-users me-1"></i>Meet the Team</a>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Story Section -->
-<section id="story" class="story-section">
+  <!-- Stats Section -->
+  <section class="py-5 bg-white">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="section-title" data-aos="fade-up">Our Sweet Story</h2>
-                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-                    Every great bakery has a story, and ours begins with passion, tradition, and a love for creating moments of joy.
-                </p>
-                
-                <div class="timeline">
-                    <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <h4 class="timeline-title">The Beginning</h4>
-                            <p>What started as a small home kitchen experiment turned into a passion for creating beautiful, delicious cakes that bring families together for life's most special moments. Our founder, MzBell, discovered her love for baking while creating her daughter's first birthday cake.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item" data-aos="fade-left" data-aos-delay="300">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <h4 class="timeline-title">Growing Dreams</h4>
-                            <p>As word spread about our exceptional cakes and personalized service, we expanded our offerings and opened our doors to serve the community we love. From birthday parties to weddings, we became part of countless celebrations.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item" data-aos="fade-right" data-aos-delay="400">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <h4 class="timeline-title">Innovation & Tradition</h4>
-                            <p>We invested in the finest equipment and continued learning new techniques while staying true to traditional baking methods. Our commitment to quality ingredients and artistic presentation set us apart in the industry.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item" data-aos="fade-left" data-aos-delay="500">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <h4 class="timeline-title">Today & Tomorrow</h4>
-                            <p>Today, MzBell's Bakery continues to innovate while staying true to our core values of quality, creativity, and customer satisfaction. Every cake tells a story, and we're honored to be part of yours as we look forward to many more sweet years ahead.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="row text-center">
+        {% for stat in stats %}
+        <div class="col-6 col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
+          <h2 class="fw-bold display-5 stats-number" data-target="{{ stat.value }}">0</h2>
+          <p class="text-muted">{{ stat.label }}</p>
         </div>
+        {% endfor %}
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Values Section -->
-<section class="values-section">
+  <!-- Story Section -->
+  <section id="story" class="py-5 bg-light">
     <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Our Values</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-            The principles that guide everything we do
-        </p>
-        
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <h4 class="value-title">Quality First</h4>
-                    <p>We use only the finest ingredients and time-tested techniques to ensure every bite is perfect. From premium Belgian chocolate to farm-fresh eggs, quality is never compromised.</p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h4 class="value-title">Creative Excellence</h4>
-                    <p>Every cake is a work of art, designed to reflect your unique vision and celebration. Our team of skilled decorators brings imagination to life with precision and creativity.</p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h4 class="value-title">Customer Care</h4>
-                    <p>Your satisfaction is our priority. We're here to make your special moments even more memorable with personalized service and attention to every detail of your order.</p>
-                </div>
-            </div>
+      <h2 class="text-center mb-4" data-aos="fade-up">Our Sweet Journey</h2>
+      <p class="text-center mb-5" data-aos="fade-up" data-aos-delay="100">
+        Every great bakery has a story. Ours begins with passion, tradition, and love for creating joy through flavor.
+      </p>
+      <div class="timeline">
+        {% for item in timeline %}
+        <div class="timeline-item mb-5" data-aos="fade-{{ forloop.counter|divisibleby:2|yesno:'left,right' }}" data-aos-delay="{{ forloop.counter|add_mul:'2,100' }}">
+          <h5 class="fw-bold">{{ item.title }}</h5>
+          <p>{{ item.text }}</p>
         </div>
+        {% endfor %}
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Team Section -->
-<section id="team" class="team-section">
+  <!-- Core Values Section -->
+  <section class="py-5 bg-white">
     <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Meet Our Team</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-            The talented individuals who make the magic happen
-        </p>
-        
-        <div class="row g-4">
-            {% if team_members %}
-                {% for member in team_members %}
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1|mul:100 }}">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            {% if member.image %}
-                                <img src="{{ member.image.url }}" alt="{{ member.name }}">
-                            {% else %}
-                                {{ member.name|first|upper }}
-                            {% endif %}
-                        </div>
-                        <h4 class="team-name">{{ member.name }}</h4>
-                        <p class="team-position">{{ member.position|default:"Team Member" }}</p>
-                        {% if member.bio %}
-                            <p class="team-bio">{{ member.bio|truncatewords:25 }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
+      <h2 class="text-center" data-aos="fade-up">Our Core Values</h2>
+      <div class="row mt-4">
+        {% for value in values %}
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
+          <div class="p-4 shadow-sm rounded bg-white text-center h-100">
+            <i class="fas {{ value.icon }} fa-2x mb-3 text-primary"></i>
+            <h5 class="fw-bold">{{ value.title }}</h5>
+            <p>{{ value.text }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4" data-aos="fade-up">Meet the Team</h2>
+      <div class="row">
+        {% for member in team_members %}
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
+          <div class="card h-100 text-center p-3">
+            {% if member.image %}
+            <img src="{{ member.image.url }}" class="rounded-circle mx-auto mb-3" style="width: 100px; height: 100px; object-fit: cover;" alt="{{ member.name }}">
             {% else %}
-                <!-- Default team members -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="team-card">
-                        <div class="team-avatar">M</div>
-                        <h4 class="team-name">MzBell</h4>
-                        <p class="team-position">Founder & Head Baker</p>
-                        <p class="team-bio">The creative mind behind our delicious creations, bringing years of passion and expertise to every cake. MzBell's vision of combining artistry with exceptional taste drives everything we do.</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="team-card">
-                        <div class="team-avatar">S</div>
-                        <h4 class="team-name">Sarah</h4>
-                        <p class="team-position">Lead Cake Decorator</p>
-                        <p class="team-bio">Our artistic genius who transforms every cake into a masterpiece with attention to detail and creative flair. Sarah's background in fine arts brings a unique aesthetic to our designs.</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="team-card">
-                        <div class="team-avatar">J</div>
-                        <h4 class="team-name">James</h4>
-                        <p class="team-position">Customer Experience Manager</p>
-                        <p class="team-bio">Ensuring every customer feels valued and their special requirements are perfectly understood and fulfilled. James coordinates orders and maintains our high standards of service.</p>
-                    </div>
-                </div>
+            <div class="bg-secondary text-white rounded-circle d-inline-block mb-3 p-3 fs-4">{{ member.name|first|upper }}</div>
             {% endif %}
-        </div>
-    </div>
-</section>
-
-<!-- Call to Action -->
-<section class="cta-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h2 class="section-title" data-aos="fade-up">Ready to Create Something Sweet?</h2>
-                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-                    Let us help you celebrate life's special moments with our custom cakes and delicious treats. From intimate gatherings to grand celebrations, we're here to make it memorable.
-                </p>
-                <div class="d-flex justify-content-center gap-3 flex-wrap" data-aos="fade-up" data-aos-delay="200">
-                    <a href="{% url 'frontend:product_list' %}" class="btn-custom">
-                        <i class="fas fa-birthday-cake me-2"></i>View Our Products
-                    </a>
-                    <a href="{% url 'frontend:contact' %}" class="btn-outline-custom">
-                        <i class="fas fa-envelope me-2"></i>Contact Us
-                    </a>
-                </div>
+            <h5>{{ member.name }}</h5>
+            <p class="text-muted">{{ member.role }}</p>
+            {% if member.bio %}
+            <p class="small">{{ member.bio|truncatewords:20 }}</p>
+            {% endif %}
+            <div class="mt-2">
+              {% if member.twitter %}<a href="{{ member.twitter }}" class="me-2 text-dark"><i class="fab fa-twitter"></i></a>{% endif %}
+              {% if member.facebook %}<a href="{{ member.facebook }}" class="me-2 text-dark"><i class="fab fa-facebook-f"></i></a>{% endif %}
+              {% if member.instagram %}<a href="{{ member.instagram }}" class="me-2 text-dark"><i class="fab fa-instagram"></i></a>{% endif %}
+              {% if member.linkedin %}<a href="{{ member.linkedin }}" class="me-2 text-dark"><i class="fab fa-linkedin-in"></i></a>{% endif %}
             </div>
+          </div>
         </div>
+        {% empty %}
+        <div class="col-12 text-center">No team members available yet.</div>
+        {% endfor %}
+      </div>
     </div>
+  </section>
+
+
+  <!-- After Team Section -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="text-center mb-5" data-aos="fade-up">What Our Customers Say</h2>
+    <div class="row">
+      {% for t in testimonials %}
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
+        <div class="card h-100 text-center p-4 shadow-sm">
+          <img src="{% static t.image %}" class="rounded-circle mx-auto mb-3" alt="{{ t.name }}" width="80" height="80" style="object-fit: cover;">
+          <blockquote class="blockquote mb-0">
+            <p class="mb-3">“{{ t.quote }}”</p>
+            <footer class="blockquote-footer">{{ t.name }}</footer>
+          </blockquote>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
-<!-- Scripts -->
+
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="text-center mb-5" data-aos="fade-up">What Our Customers Say</h2>
+    <div class="row">
+      {% for t in testimonials %}
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add_mul:'1,100' }}">
+        <div class="card h-100 text-center p-4 shadow-sm">
+          <img src="{% static t.image %}" class="rounded-circle mx-auto mb-3" alt="{{ t.name }}" width="80" height="80" style="object-fit: cover;">
+          <blockquote class="blockquote mb-0">
+            <p class="mb-3">“{{ t.quote }}”</p>
+            <footer class="blockquote-footer">{{ t.name }}</footer>
+          </blockquote>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- CTA Section -->
+  <section class="py-5 text-center text-white bg-primary">
+    <div class="container">
+      <h2 class="fw-bold mb-3" data-aos="fade-up">Ready to Create Something Sweet?</h2>
+      <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">Let us make your special moments unforgettable.</p>
+      <a href="{% url 'frontend:product_list' %}" class="btn btn-light me-2"><i class="fas fa-store me-1"></i> Shop Now</a>
+      <a href="{% url 'frontend:contact' %}" class="btn btn-outline-light"><i class="fas fa-envelope me-1"></i> Contact Us</a>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script>
-    // Initialize AOS
-    AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true,
-        offset: 100
-    });
+  AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerOffset = 80;
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // Counter animation
-    function animateCounters() {
-        const counters = document.querySelectorAll('.stats-counter');
-        
-        counters.forEach(counter => {
-            const target = parseInt(counter.getAttribute('data-target'));
-            let current = 0;
-            const increment = target / 60; // Animation duration control
-            
-            const updateCounter = () => {
-                if (current < target) {
-                    current += increment;
-                    counter.textContent = Math.floor(current) + (target >= 1000 ? '+' : '+');
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    counter.textContent = target + '+';
-                }
-            };
-            
-            updateCounter();
-        });
-    }
-
-    // Intersection Observer for counter animation
-    const observerOptions = {
-        threshold: 0.5,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounters();
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    const statsSection = document.querySelector('.stats-section');
-    if (statsSection) {
-        observer.observe(statsSection);
-    }
-
-    // Add loading animation classes
-    window.addEventListener('load', function() {
-        const elements = document.querySelectorAll('.fade-in-up, .scale-in');
-        elements.forEach(element => {
-            element.classList.add('animate');
-        });
-    });
-
-    // Parallax effect for hero section
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const parallax = document.querySelector('.hero-section::before');
-        if (parallax) {
-            const speed = scrolled * 0.5;
-            parallax.style.transform = `translateY(${speed}px)`;
+  function animateCounters() {
+    document.querySelectorAll('.stats-number').forEach(counter => {
+      const target = +counter.dataset.target;
+      let count = 0;
+      const step = target / 60;
+      function update() {
+        if (count < target) {
+          count += step;
+          counter.innerText = Math.floor(count) + '+';
+          requestAnimationFrame(update);
+        } else {
+          counter.innerText = target + '+';
         }
+      }
+      update();
     });
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounters();
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.stats-number').forEach(el => observer.observe(el));
 </script>
 {% endblock %}

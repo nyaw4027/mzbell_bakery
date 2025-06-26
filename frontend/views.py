@@ -468,18 +468,44 @@ def track_order(request, order_id):
 
 
 def about(request):
-    """
-    About us page with team members
-    """
-    team = TeamMember.objects.all()
+    stats = [
+        {'label': 'Happy Customers', 'value': 500},
+        {'label': 'Cake Varieties', 'value': 50},
+        {'label': 'Years Experience', 'value': 5},
+        {'label': 'Cakes Baked', 'value': 1000},
+    ]
+
+    timeline = [
+        {'title': 'The Beginning', 'text': 'Started as a home kitchen experiment by MzBell.'},
+        {'title': 'Growing Dreams', 'text': 'Expanded into the community with love.'},
+        {'title': 'Innovation & Tradition', 'text': 'Mixing new techniques with old recipes.'},
+        {'title': 'Today & Tomorrow', 'text': 'Continuing to grow and inspire.'},
+    ]
+
+    values = [
+        {'icon': 'fa-heart', 'title': 'Quality First', 'text': 'Only the finest ingredients.'},
+        {'icon': 'fa-palette', 'title': 'Creative Excellence', 'text': 'Every cake is a masterpiece.'},
+        {'icon': 'fa-users', 'title': 'Customer Care', 'text': 'Your satisfaction is our priority.'},
+    ]
+
+    team_members = TeamMember.objects.all()  # Or empty list if you don't have model
 
     context = {
-        'page_title': "About MzBell's Bakery",
-        'team': team
+        'stats': stats,
+        'timeline': timeline,
+        'values': values,
+        'team_members': team_members,
     }
 
-    return render(request, 'frontend/about.html', context)
+    testimonials = [
+        {'name': 'Annabel.', 'quote': 'Absolutely the best cake I’ve ever had!', 'image': 'img/testimonial1.jpg'},
+        {'name': 'Abiah Felicity.', 'quote': 'MzBell’s cakes made my wedding perfect!', 'image': 'img/testimonial2.jpg'},
+        {'name': 'Devina.', 'quote': 'Creative, delicious, and beautiful!', 'image': 'img/testimonial3.jpg'},
+    ]
 
+    context['testimonials'] = testimonials
+
+    return render(request, 'about.html', context)
 
 def contact(request):
     """

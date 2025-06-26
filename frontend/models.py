@@ -18,6 +18,12 @@ class TeamMember(models.Model):
     image = models.ImageField(upload_to='team/', blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
 
+    # Social media links (optional)
+    twitter = models.URLField(blank=True, null=True)
+    facebook = models.URLField(blank=True, null=True)
+    instagram = models.URLField(blank=True, null=True)
+    linkedin = models.URLField(blank=True, null=True)
+
     class Meta:
         ordering = ['order']
 
